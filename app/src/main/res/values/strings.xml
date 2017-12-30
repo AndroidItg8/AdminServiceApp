@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Admin Service App</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_ticket">Ticket</string>
+    <string name="title_activity_enquiry">Enquiry</string>
+    <string name="title_activity_sales_person">Sales Persons</string>
+    <string name="title_activity_add_sales_person">Add Sales Person</string>
+    <string name="title_activity_feedback">Feedback</string>
+    <string name="title_activity_gst">GST</string>
+    <string name="empty">Field is empty</string>
+    <string name="invalid_email">Inavalid Email</string>
+    <string name="invalid_pass">minimum alteast 6 password</string>
+    <string name="url_login">/Token</string>
+    <string name="no_internet">No Internet Connection!!!! Try again</string>
+    <string name="rationale_no_permission">Please provide call  and  sms permission</string>
+    <string name="url_feedback">/api/CustomerApp/FeedBackList</string>
+    <string name="url_enquiry">/api/CustomerApp/EnquiryListList</string>
+    <string name="title_activity_tender">Tender</string>
+    <string name="title_activity_tender_details">Tender Details</string>
+    <string name="url_pending_tender">/api/CustomerApp/PendingTenderList</string>
+    <string name="url_sales_person">/api/CustomerApp/SalesPersonList</string>
+    <string name="url_add_eng">/api/CustomerApp/Register</string>
+    <string name="title_activity_sales_details">SalesDetailsActivity</string>
+    <string name="invalid_number">Mobile number is not valid</string>
+    <string name="url_update_engg">/api/CustomerApp/UpdateRegister</string>
+    <string name="title_activity_tender_details_rejected"> Rejected Tender</string>
+    <string name="url_ticket">/api/CustomerApp/GetTicketList</string>
+    <string name="url_submited_tender">/api/CustomerApp/TenderFillList</string>
+    <string name="url_tender_rejected">/api/CustomerApp/RejectTenderList</string>
+    <string name="url_delete_engg">/api/CustomerApp/DeleteRegister</string>
+    <string name="no_more_list">No More List Available..!!!</string>
+    <string name="select_item">Please check any  doucment item in the list.</string>
+    <string name="url_upadte_tender_document">/api/CustomerApp/UpdateTenderRequitedDoc</string>
+    <string name="title_sending_mail">Send Document Mail</string>
+    <string name="subject">REG : </string>
+    <string name="mail_body"><![CDATA[Dear Sir,]]></string>
+    <string name="title_activity_ticket_details">Ticket Details</string>
+    <string name="url_update_ticket">/api/CustomerApp/TicketRaise</string>
+    <string name="url_firebase_token">/api/CustomerApp/NotificationDetails</string>
+</resources>

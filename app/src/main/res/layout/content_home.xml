@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="itg8.com.adminserviceapp.home.HomeActivity"
+    tools:showIn="@layout/activity_home">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_itech"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/itech_logo" />
+
+        <LinearLayout
+            android:id="@+id/ll_iso"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/img_itech"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/lbl_app"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="An ISO Number"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/roboto_medium"
+
+                android:textSize="16sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/lbl_iso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="An ISO Number"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/roboto_medium"
+
+                android:textSize="16sp"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_below="@+id/img_itech"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:id="@+id/ll_first"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_ticket"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_box">
+
+                    <ImageView
+                        android:id="@+id/img_activity"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        app:srcCompat="@drawable/ic_tickets" />
+
+                    <TextView
+                        android:id="@+id/lbl_ticket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/img_activity"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:fontFamily="@font/roboto_medium"
+
+                        android:text="Ticket"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textview" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_gst"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_box">
+
+                    <ImageView
+                        android:id="@+id/img_acc_gst"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        app:srcCompat="@drawable/ic_account_balance_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/lbl_gst"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/img_acc_gst"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="GST"
+                        android:fontFamily="@font/roboto_medium"
+
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textview" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_sales_person"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_box">
+
+                    <ImageView
+                        android:id="@+id/img_sleep"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        app:srcCompat="@drawable/ic_person_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/lbl_sales_person"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/img_sleep"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="Sales Person"
+                        android:fontFamily="@font/roboto_medium"
+
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textview" />
+
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_enquiry"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_box">
+
+                    <ImageView
+                        android:id="@+id/img_enquiry"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        app:srcCompat="@drawable/ic_perm_contact_calendar_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/lbl_enquiry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/img_enquiry"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="Enquiry"
+                        android:fontFamily="@font/roboto_medium"
+
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textview" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_tender"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_box">
+
+                <ImageView
+                    android:id="@+id/img_tender"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    app:srcCompat="@drawable/bg_tender" />
+
+                <TextView
+                    android:id="@+id/lbl_tender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_tender"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="Tender"
+                    android:fontFamily="@font/roboto_medium"
+
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/textview" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
+
+</ScrollView>
+

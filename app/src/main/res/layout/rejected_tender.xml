@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/lbl_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="04dp"
+            android:layout_marginEnd="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="PROVIDING AND INSTALLING THE CCTV CAMERA O ON SPILLWAY OF LOWER WARDHA AT DHANODI(BA) TAL ARVI,DIST WARDHA(M.S.)"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/lbl_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view"
+            android:layout_marginBottom="08dp"
+            android:layout_marginEnd="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="04dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_light"
+            android:lines="2"
+            android:maxLines="2"
+            android:text="PROVIDING AND INSTALLING THE CCTV CAMERA O ON SPILLWAY OF LOWER WARDHA AT DHANODI(BA) TAL ARVI,DIST WARDHA(M.S.)"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@+id/lbl_title"
+            android:layout_marginEnd="08dp"
+            android:layout_marginStart="08dp"
+            android:background="@color/colorGray" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_description"
+            android:layout_marginEnd="08dp"
+            android:layout_marginStart="08dp"
+            android:background="@drawable/bg_box_rl">
+
+            <TextView
+                android:id="@+id/lbl_open_date_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="08dp"
+                android:layout_marginStart="08dp"
+                android:layout_marginTop="08dp"
+                android:layout_toEndOf="@+id/lbl_open_date"
+                android:fontFamily="@font/roboto"
+                android:text="17-08-2017:14:09:00"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+
+            <TextView
+                android:id="@+id/lbl_open_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="08dp"
+                android:layout_marginTop="08dp"
+                android:fontFamily="@font/roboto"
+                android:text="Close Date:"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/lbl_status_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lbl_tender_fee"
+                android:layout_alignBaseline="@+id/lbl_status"
+                android:layout_marginEnd="08dp"
+                android:layout_marginTop="08dp"
+                android:layout_marginStart="08dp"
+                android:layout_toEndOf="@+id/lbl_status"
+                android:fontFamily="@font/roboto"
+                android:text="YES"
+                android:textColor="@color/colorGreen"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/lbl_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lbl_tender_fee"
+                android:layout_marginEnd="08dp"
+                android:layout_marginTop="08dp"
+                android:fontFamily="@font/roboto"
+                android:text="Refunded Amount:"
+                android:layout_alignStart="@+id/lbl_open_date"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+
+            <TextView
+                android:id="@+id/lbl_tender_fee_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lbl_open_date"
+                android:layout_toEndOf="@+id/lbl_open_date"
+                android:layout_marginBottom="08dp"
+                android:layout_marginTop="08dp"
+                android:layout_marginStart="08dp"
+                android:fontFamily="@font/roboto"
+                android:text="\u20B9519"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+
+            <TextView
+                android:id="@+id/lbl_tender_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lbl_open_date"
+                android:layout_alignStart="@+id/lbl_open_date"
+                android:layout_marginBottom="08dp"
+                android:layout_marginTop="08dp"
+                android:fontFamily="@font/roboto"
+                android:text="Tender Fee:"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

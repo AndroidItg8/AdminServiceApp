@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="08dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="itg8.com.adminserviceapp.sales.SalesDetailsActivity"
+    tools:showIn="@layout/activity_sales_details">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:id="@+id/lbl_description"
+            android:text="Engineer Details"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+
+
+        <TextView
+            android:id="@+id/lbl_personName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:layout_below="@+id/lbl_description"
+            android:layout_toEndOf="@+id/lbl_person"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:layout_marginBottom="08dp"
+            android:text="person Name"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/lbl_person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:layout_below="@+id/lbl_description"
+            android:drawableLeft="@drawable/ic_person_black_24dp"
+            android:drawablePadding="10dp"
+            android:layout_marginTop="08dp"
+            android:layout_marginBottom="08dp"
+            android:text="Name:"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/lbl_mobiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:layout_below="@+id/lbl_person"
+            android:drawableLeft="@drawable/ic_phone"
+            android:drawablePadding="10dp"
+            android:layout_marginBottom="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:text="Mobile Number:"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+
+        <TextView
+            android:id="@+id/lbl_mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_personName"
+            android:layout_toEndOf="@+id/lbl_mobiles"
+            android:autoLink="phone"
+            android:layout_marginBottom="08dp"
+            android:layout_marginTop="08dp"
+            android:layout_marginStart="08dp"
+            android:fontFamily="@font/roboto"
+            android:layout_alignBaseline="@+id/lbl_mobiles"
+            android:text="9823448855"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack" />
+
+
+        <TextView
+            android:id="@+id/lbl_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_mobile"
+            android:layout_marginBottom="08dp"
+            android:layout_marginTop="08dp"
+            android:layout_marginStart="08dp"
+            android:fontFamily="@font/roboto"
+            android:layout_toEndOf="@+id/lbl_emails"
+            android:text="abc@gmail.com"
+            android:layout_alignBaseline="@+id/lbl_emails"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            android:visibility="visible" /> 
+        <TextView
+            android:id="@+id/lbl_emails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_mobile"
+            android:layout_marginBottom="08dp"
+            android:layout_marginTop="08dp"
+            android:layout_marginStart="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="Email:"
+            android:drawableLeft="@drawable/ic_emails"
+            android:drawablePadding="10dp"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/lbl_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_email"
+            android:layout_marginBottom="08dp"
+            android:layout_marginTop="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_toEndOf="@+id/lbl_addresses"
+            android:fontFamily="@font/roboto"
+            android:text="Gayatri Nagar IT Park Road Nagpur "
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            android:visibility="visible" /> 
+        <TextView
+            android:id="@+id/lbl_addresses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_email"
+            android:layout_marginBottom="08dp"
+            android:layout_marginTop="08dp"
+            android:layout_marginStart="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="Gayatri Nagar IT Park Road Nagpur "
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

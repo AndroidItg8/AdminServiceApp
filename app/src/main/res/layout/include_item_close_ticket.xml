@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/lbl_Engg"
+    android:visibility="visible"
+    android:layout_margin="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/lbl_engg_name_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="08dp"
+        android:layout_marginStart="08dp"
+        android:layout_marginTop="08dp"
+        android:layout_toEndOf="@+id/lbl_engg_name"
+        android:fontFamily="@font/roboto"
+        android:text="Engineer Name"
+        android:textColor="@color/colorBlack"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/lbl_engg_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="08dp"
+        android:layout_marginTop="08dp"
+        android:fontFamily="@font/roboto"
+        android:text="Name:"
+        android:textColor="@color/colorGray"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/lbl_engg_mobile_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lbl_engg_mobile"
+        android:layout_below="@+id/lbl_engg_name"
+        android:layout_marginEnd="08dp"
+        android:layout_marginStart="08dp"
+        android:layout_marginTop="08dp"
+        android:layout_toEndOf="@+id/lbl_engg_mobile"
+        android:fontFamily="@font/roboto"
+        android:text="9823778532"
+        android:textColor="@color/colorBlack"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/lbl_engg_mobile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/lbl_engg_name"
+        android:layout_below="@+id/lbl_engg_name"
+        android:layout_marginEnd="08dp"
+        android:layout_marginTop="08dp"
+        android:fontFamily="@font/roboto"
+        android:text="Mobile:"
+        android:textColor="@color/colorGray"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+
+</RelativeLayout>

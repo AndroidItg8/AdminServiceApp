@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/rl_pending"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="visible"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Spinner
+        android:id="@+id/eng_pending_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginEnd="08dp"
+        android:layout_marginStart="08dp"
+        android:background="@drawable/bg_box_rl" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eng_pending_spinner"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp">
+
+        <Button
+            android:id="@+id/btn_pending_sync"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:text="assign"
+            android:textColor="@color/colorWhite"
+            android:visibility="visible" />
+
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/progressView_pending"
+            android:visibility="gone"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+
+</RelativeLayout>

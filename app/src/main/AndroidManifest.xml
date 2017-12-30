@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="itg8.com.adminserviceapp">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!--<instrumentation-->
+        <!--android:name="android.support.test.runner.AndroidJUnitRunner"-->
+        <!--android:targetPackage="itg8.com.adminserviceapp" />-->
+
+    <application
+        android:name=".common.AppApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".home.HomeActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".login.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ticket.TicketActivity"
+            android:label="@string/title_activity_ticket"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".enquiry.EnquiryActivity"
+            android:label="@string/title_activity_enquiry"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".sales.SalesPersonActivity"
+            android:label="@string/title_activity_sales_person"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".sales.AddSalesPersonActivity"
+            android:label="@string/title_activity_add_sales_person"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feedback.FeedbackActivity"
+            android:label="@string/title_activity_feedback"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".gst.GSTActivity"
+            android:label="@string/title_activity_gst"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <uses-library android:name="android.test.runner" />
+
+        <activity
+            android:name=".tender.TenderActivity"
+            android:label="@string/title_activity_tender"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name=".tender.TenderDetailsActivity"
+            android:label="@string/title_activity_tender_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".sales.SalesDetailsActivity"
+            android:label="@string/title_activity_sales_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".tender.TenderDetailsRejectedActivity"
+            android:label="@string/title_activity_tender_details_rejected"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ticket.TicketDetailsActivity"
+            android:label="@string/title_activity_ticket_details"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>

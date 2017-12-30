@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textview">12sp</dimen>
+    <dimen name="textviews">13sp</dimen>
+
+    <dimen name="textviewGray">11sp</dimen>
+    <dimen name="text_font">14sp</dimen>
+    <dimen name="large_text">15sp</dimen>
+
+
+</resources>

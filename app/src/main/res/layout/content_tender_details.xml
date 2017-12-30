@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="itg8.com.adminserviceapp.tender.TenderDetailsActivity"
+    tools:showIn="@layout/activity_tender_details">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/lbl_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="PROVIDING AND INSTALLING THE CCTV CAMERA O ON SPILLWAY OF LOWER WARDHA AT DHANODI(BA) TAL ARVI,DIST WARDHA(M.S.)"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:textStyle="normal" />
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginEnd="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="04dp"
+            android:layout_marginBottom="04dp"
+            android:layout_below="@+id/lbl_title"
+            android:background="@color/colorGray"/>
+
+        <TextView
+            android:id="@+id/lbl_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view"
+            android:layout_margin="08dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="PROVIDING AND INSTALLING THE CCTV CAMERA O ON SPILLWAY OF LOWER WARDHA AT DHANODI(BA) TAL ARVI,DIST WARDHA(M.S.)"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="08dp"
+        android:layout_marginStart="08dp"
+        android:background="@drawable/bg_box_rl"
+        android:layout_below="@+id/lbl_description">
+
+        <TextView
+            android:id="@+id/lbl_open_date_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:layout_toEndOf="@+id/lbl_open_date"
+            android:fontFamily="@font/roboto"
+            android:text="17-08-2017:14:09:00"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/lbl_open_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="Close Date:"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/lbl_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_open_date"
+            android:layout_alignBaseline="@+id/lbl_price_symbol"
+            android:layout_marginEnd="08dp"
+            android:layout_marginTop="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_toEndOf="@+id/lbl_price_symbol"
+            android:fontFamily="@font/roboto"
+            android:text="\u20B948,20,000000"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/lbl_price_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_open_date"
+            android:layout_marginEnd="08dp"
+            android:layout_marginTop="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="Amount:"
+            android:layout_alignStart="@+id/lbl_open_date"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/lbl_end_date_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_price_symbol"
+            android:layout_alignBaseline="@+id/lbl_end_date"
+            android:layout_marginTop="08dp"
+            android:layout_marginBottom="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_toEndOf="@+id/lbl_end_date"
+            android:fontFamily="@font/roboto"
+            android:text="590"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/lbl_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_price_symbol"
+            android:layout_alignStart="@+id/lbl_open_date"
+            android:layout_marginBottom="08dp"
+            android:layout_marginTop="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="Tender Fee in:"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/lbl_location_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_end_date_value"
+            android:layout_alignBaseline="@+id/lbl_location"
+            android:layout_marginTop="08dp"
+            android:layout_marginBottom="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_toEndOf="@+id/lbl_location"
+            android:fontFamily="@font/roboto"
+            android:text="Wardha"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/lbl_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_end_date_value"
+            android:layout_alignStart="@+id/lbl_open_date"
+            android:layout_marginBottom="08dp"
+            android:layout_marginTop="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="Location:"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/lbl_emd_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_location_value"
+            android:layout_alignBaseline="@+id/lbl_emd"
+            android:layout_marginTop="08dp"
+            android:layout_marginBottom="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_toEndOf="@+id/lbl_emd"
+            android:fontFamily="@font/roboto"
+            android:text="15,000"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/lbl_emd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_location_value"
+            android:layout_alignStart="@+id/lbl_location"
+            android:layout_marginBottom="08dp"
+            android:layout_marginTop="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="EMD Amount in:"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+
+        <ImageButton
+            android:id="@+id/img_pdf"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/bg_pdf"
+            android:text="Open PDF"
+            android:layout_marginEnd="04dp"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+           android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+    </RelativeLayout>
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/frameLayout"
+    android:layout_below="@+id/rl_top">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       />
+
+    <RelativeLayout
+        android:id="@+id/rl_no_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/img_no"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            app:srcCompat="@drawable/bg_no_list" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/img_no"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="No Document List Available!!!"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+</FrameLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/frameLayout"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
+
+    <Button
+        android:id="@+id/btn_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="05dp"
+        android:layout_marginTop="05dp"
+        android:background="@color/colorPrimary"
+        android:text="sync"
+        android:textColor="@color/colorWhite" />
+
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:id="@+id/progressView"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+    </RelativeLayout>
+</ScrollView>

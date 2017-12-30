@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="itg8.com.adminserviceapp.tender.TenderDetailsRejectedActivity"
+    tools:showIn="@layout/activity_tender_details_rejected">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/rejected_tender" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include"
+        android:layout_marginEnd="18dp"
+        android:layout_marginStart="18dp"
+        android:background="@drawable/bg_box_rl">
+
+        <TextView
+            android:id="@+id/lbl_tender_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:layout_toEndOf="@+id/lbl_tender"
+            android:fontFamily="@font/roboto"
+            android:text="\u20B914,98,278"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/lbl_tender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="Tender Value:"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/lbl_location_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_tender"
+            android:layout_marginBottom="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:layout_toEndOf="@+id/lbl_location"
+            android:fontFamily="@font/roboto"
+            android:text="Wardha"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/lbl_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_tender"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="Location:"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/lbl_emd_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_location"
+            android:layout_marginBottom="08dp"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:layout_toEndOf="@+id/lbl_emd"
+            android:fontFamily="@font/roboto"
+            android:text="\u20B915,000"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/lbl_emd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_location"
+            android:layout_marginStart="08dp"
+            android:layout_marginTop="08dp"
+            android:fontFamily="@font/roboto"
+            android:text="EMD Amount:"
+            android:textColor="@color/colorGray"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+    </RelativeLayout>
+    <Button
+        android:id="@+id/btn_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="08dp"
+        android:layout_marginTop="08dp"
+        android:background="@color/colorPrimary"
+        android:text="ReFund"
+        android:textAllCaps="true"
+        android:textColor="@color/colorWhite" />
+
+</RelativeLayout>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/lbl_Engg"
+    android:visibility="visible"
+    android:layout_margin="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/lbl_engg_name_Assign_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="08dp"
+        android:layout_marginStart="08dp"
+        android:layout_marginTop="08dp"
+        android:drawableRight="@drawable/ic_edit_black_24dp"
+        android:drawablePadding="10dp"
+        android:layout_toEndOf="@+id/lbl_engg_name"
+        android:fontFamily="@font/roboto"
+        android:text="Engineer Name"
+        android:textColor="@color/colorBlack"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/lbl_engg_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="08dp"
+        android:layout_marginTop="08dp"
+        android:fontFamily="@font/roboto"
+        android:text="Name:"
+        android:textColor="@color/colorGray"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/lbl_engg_mobile_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lbl_engg_mobile"
+        android:layout_below="@+id/lbl_engg_name"
+        android:layout_marginEnd="08dp"
+        android:layout_marginStart="08dp"
+        android:layout_marginTop="08dp"
+        android:layout_toEndOf="@+id/lbl_engg_mobile"
+        android:fontFamily="@font/roboto"
+        android:text="9823778532"
+        android:textColor="@color/colorBlack"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/lbl_engg_mobile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/lbl_engg_name"
+        android:layout_below="@+id/lbl_engg_name"
+        android:layout_marginEnd="08dp"
+        android:layout_marginTop="08dp"
+        android:fontFamily="@font/roboto"
+        android:text="Mobile:"
+        android:textColor="@color/colorGray"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_engg_mobile">
+
+    <Button
+        android:id="@+id/btn_assign_close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="08dp"
+        android:layout_marginStart="08dp"
+        android:layout_marginTop="08dp"
+        android:background="@color/colorPrimary"
+        android:text="close Ticket"
+        android:textColor="@color/colorWhite"
+        android:visibility="visible" />
+
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/progressView_assign"
+            android:visibility="gone"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+</RelativeLayout>

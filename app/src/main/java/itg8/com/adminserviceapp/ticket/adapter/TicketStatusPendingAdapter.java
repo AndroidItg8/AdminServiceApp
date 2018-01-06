@@ -30,6 +30,7 @@ import itg8.com.adminserviceapp.ticket.model.TicketModel;
 public class TicketStatusPendingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<TicketModel> list;
+
     private Context activity;
     private TicketViewHolder holderTicket;
     private static final int LOADING_VIEW = 1;
@@ -49,7 +50,7 @@ public class TicketStatusPendingAdapter extends RecyclerView.Adapter<RecyclerVie
         RecyclerView.ViewHolder holder;
         if (viewType == NORMAL_VIEW) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ticket, parent, false);
-            holder = new TicketStatusPendingAdapter.TicketViewHolder(view);
+            holder = new TicketViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rv_progress, parent, false);
             holder = new ProgressHolder(view);
@@ -59,31 +60,30 @@ public class TicketStatusPendingAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (holder instanceof TicketViewHolder) {
-                holderTicket = (TicketViewHolder) holder;
-                holderTicket.model = list.get(position);
-                if(list.get(position).getCust().size()>0)
-                    holderTicket.custModel = list.get(position).getCust().get(0);
-                if(list.get(position).getProduct().size()>0)
-                    holderTicket.productModel = list.get(position).getProduct().get(0);
-                if(list.get(position).getProblem().size()>0)
+        if (holder instanceof TicketViewHolder) {
+            holderTicket = (TicketViewHolder) holder;
+            holderTicket.model = list.get(position);
+            if (list.get(position).getCust().size() > 0)
+                holderTicket.custModel = list.get(position).getCust().get(0);
+            if (list.get(position).getProduct().size() > 0)
+                holderTicket.productModel = list.get(position).getProduct().get(0);
+            if (list.get(position).getProblem().size() > 0)
 
-                if(list.get(position).getProblem() !=null)
+                if (list.get(position).getProblem() != null)
                     holderTicket.lblProblem.setText(CommonMethod.checkEmpty(list.get(position).getProblem().get(0).getProblem()));
 
-                holderTicket.lblEngName.setVisibility(View.GONE);
-                Calendar date = (CommonMethod.ConvertStringToDateWithoutMillies(list.get(position).getAssignDate()));
-                String year = String.valueOf(date.get(Calendar.YEAR));
-                String month = String.valueOf(date.get(Calendar.MONTH)+1);
-                String day = String.valueOf(date.get(Calendar.DATE));
-                holderTicket.lblOtp.setText(day);
-                holderTicket.lblYear.setText(month+"-"+year);
-                holderTicket.lblInvoiceNumber.setText(String.valueOf(list.get(position).getInvoiceFkid()));
+            holderTicket.lblEngName.setVisibility(View.GONE);
+            holderTicket.lblEngNameValue.setVisibility(View.GONE);
+            Calendar date = (CommonMethod.ConvertStringToDateWithoutMillies(list.get(position).getAssignDate()));
+            String year = String.valueOf(date.get(Calendar.YEAR));
+            String month = String.valueOf(date.get(Calendar.MONTH) + 1);
+            String day = String.valueOf(date.get(Calendar.DATE));
+            holderTicket.lblOtp.setText(day);
+            holderTicket.lblYear.setText(month + "-" + year);
+            holderTicket.lblInvoiceNumberValue.setText(String.valueOf(list.get(position).getInvoiceFkid()));
 
-            }
         }
-
-
+    }
 
 
     @Override
@@ -109,13 +109,13 @@ public class TicketStatusPendingAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public void removeFooter() {
-        Logs.d("RemoveFooterB4:"+list.size());
+        Logs.d("RemoveFooterB4:" + list.size());
 
         final int itemRemoved = list.size() - 1;
         list.remove(itemRemoved);
         notifyItemRemoved(itemRemoved);
         notifyItemRangeChanged(itemRemoved, list.size());
-        Logs.d("RemoveFooterAfter:"+list.size());
+        Logs.d("RemoveFooterAfter:" + list.size());
     }
 
     public class TicketViewHolder extends RecyclerView.ViewHolder {
@@ -128,10 +128,14 @@ public class TicketStatusPendingAdapter extends RecyclerView.Adapter<RecyclerVie
         TextView lblYear;
         @BindView(R.id.lbl_invoiceNumber)
         TextView lblInvoiceNumber;
+        @BindView(R.id.lbl_invoiceNumber_value)
+        TextView lblInvoiceNumberValue;
         @BindView(R.id.lbl_problem)
         TextView lblProblem;
         @BindView(R.id.lbl_engName)
         TextView lblEngName;
+        @BindView(R.id.lbl_engName_value)
+        TextView lblEngNameValue;
         TicketModel model;
         Cust custModel;
         Problem problemModel;
@@ -144,7 +148,7 @@ public class TicketStatusPendingAdapter extends RecyclerView.Adapter<RecyclerVie
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onItemClicked(getAdapterPosition(),list.get(getAdapterPosition()));
+                    listener.onItemClicked(getAdapterPosition(), list.get(getAdapterPosition()));
                 }
             });
         }
@@ -152,8 +156,8 @@ public class TicketStatusPendingAdapter extends RecyclerView.Adapter<RecyclerVie
 
     }
 
-    public interface OnItemClickedListener{
-        void onItemClicked(int position,TicketModel ticketModel);
+    public interface OnItemClickedListener {
+        void onItemClicked(int position, TicketModel ticketModel);
     }
-    
+
 }

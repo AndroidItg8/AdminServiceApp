@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,10 +29,11 @@ public class PendingEnquiryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int LOADING_VIEW = 1;
     private static final int NORMAL_VIEW = 2;
     ItemClickedListner listener;
+
     private Context applicationContext;
     private List<EnquiryModel> list;
 
-    public PendingEnquiryAdapter(Context applicationContext,  ItemClickedListner listener) {
+    public PendingEnquiryAdapter(Context applicationContext, ItemClickedListner listener) {
         this.applicationContext = applicationContext;
         this.listener = listener;
         this.list = new ArrayList<>();
@@ -57,17 +59,33 @@ public class PendingEnquiryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (holders instanceof EnquiryViewHolder) {
             EnquiryViewHolder holder = (EnquiryViewHolder) holders;
 
-            holder.lblProductName.setText(CommonMethod.checkEmpty(list.get(position).getProductName()));
-            holder.lblPersonName.setText(CommonMethod.checkEmpty(list.get(position).getUserName()));
+            holder.lblProductName.setText(CommonMethod.checkEmpty(list.get(position).getProduct().get(0).getItemName()));
+            holder.lblPersonName.setText(CommonMethod.checkProfile(list.get(position).getCust().get(0).getCustomerName()));
             holder.lblDescription.setText(CommonMethod.checkEmpty(list.get(position).getQuery()));
-            holder.lblNumber.setText(CommonMethod.checkEmpty(list.get(position).getContact()));
-            if (TextUtils.isEmpty(list.get(position).getContact())) {
+            if (TextUtils.isEmpty(list.get(position).getCust().get(0).getMobileno())) {
                 holder.lblNumber.setVisibility(View.GONE);
                 holder.lblNumber.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             } else {
                 holder.lblNumber.setVisibility(View.VISIBLE);
+                holder.lblNumber.setText(CommonMethod.checkEmpty(list.get(position).getCust().get(0).getMobileno()));
                 holder.lblNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_phone, 0, 0, 0);
             }
+            if (TextUtils.isEmpty(list.get(position).getCust().get(0).getEmail())) {
+                holder.lblEmail.setVisibility(View.GONE);
+                holder.lblEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            } else {
+
+                holder.lblEmail.setVisibility(View.VISIBLE);
+                holder.lblEmail.setText(list.get(position).getCust().get(0).getEmail());
+                holder.lblEmail.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_emails, 0, 0, 0);
+            }
+
+            Calendar date = (CommonMethod.ConvertStringToDate(list.get(position).getLastmodifieddate()));
+            String year = String.valueOf(date.get(Calendar.YEAR));
+            String month = String.valueOf(date.get(Calendar.MONTH)+1);
+            String day = String.valueOf(date.get(Calendar.DATE));
+            holder.lblDate.setText(day+"-"+month+"-"+year);
+
         }
     }
 
@@ -76,6 +94,7 @@ public class PendingEnquiryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public int getItemCount() {
         return list.size();
     }
+
     @Override
     public int getItemViewType(int position) {
         return list.get(position) == null ? LOADING_VIEW : NORMAL_VIEW;
@@ -83,11 +102,14 @@ public class PendingEnquiryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public interface ItemClickedListner {
         void onItemClicked(int position, EnquiryModel model);
+
+        void onItemClickedListner(int position, EnquiryModel model);
+
     }
 
     public void addItems(List<EnquiryModel> o) {
-            list.addAll(o);
-            notifyDataSetChanged();
+        list.addAll(o);
+        notifyDataSetChanged();
 
     }
 
@@ -115,6 +137,8 @@ public class PendingEnquiryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView lblDescription;
         @BindView(R.id.lbl_number)
         TextView lblNumber;
+        @BindView(R.id.lbl_date)
+        TextView lblDate;
 
         public EnquiryViewHolder(View itemView) {
             super(itemView);
@@ -123,6 +147,12 @@ public class PendingEnquiryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 @Override
                 public void onClick(View view) {
                     listener.onItemClicked(getAdapterPosition(), list.get(getAdapterPosition()));
+                }
+            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClickedListner(getAdapterPosition(), list.get(getAdapterPosition()));
                 }
             });
 

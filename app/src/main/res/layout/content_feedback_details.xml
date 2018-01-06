@@ -6,21 +6,137 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="itg8.com.adminserviceapp.ticket.TicketDetailsActivity"
-    tools:showIn="@layout/activity_ticket_details">
+    tools:context="itg8.com.adminserviceapp.feedback.FeedbackDetailsActivity"
+    tools:showIn="@layout/activity_feedback_details">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:id="@+id/rl_product"
+            android:id="@+id/rl_problem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="08dp"
             android:layout_marginBottom="08dp"
             android:layout_marginEnd="18dp"
             android:layout_marginStart="18dp"
+            android:layout_marginTop="08dp"
+            android:background="@drawable/bg_box_rl">
+
+            <TextView
+                android:id="@+id/lbl_problem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="08dp"
+                android:fontFamily="@font/roboto"
+                android:text="Feedback Details:"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lbl_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lbl_problem"
+                android:layout_margin="08dp"
+                android:fontFamily="@font/roboto"
+                android:text="PROVIDING AND INSTALLING THE CCTV CAMERA O ON SPILLWAY OF LOWER WARDHA AT DHANODI(BA) TAL ARVI,DIST WARDHA(M.S.)"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+
+            <TextView
+                android:id="@+id/lbl_engg_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lbl_description"
+                android:layout_margin="08dp"
+                android:fontFamily="@font/roboto"
+                android:text="Engineer Assign :"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/lbl_engg_name_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lbl_description"
+                android:layout_margin="08dp"
+                android:layout_toEndOf="@+id/lbl_engg_name"
+                android:fontFamily="@font/roboto"
+                android:text="RajKumar SHARMA"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/lbl_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lbl_engg_name"
+                android:layout_marginBottom="08dp"
+                android:layout_marginEnd="08dp"
+                android:layout_marginStart="08dp"
+                android:fontFamily="@font/roboto"
+                android:text="Rating :"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <RatingBar
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/lbl_rating"
+                android:layout_toEndOf="@+id/lbl_rating"
+                android:numStars="5"
+                android:rating="2"
+                android:id="@+id/rating"
+                android:stepSize="1" />
+            <TextView
+                android:id="@+id/lbl_rating_ddescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lbl_rating"
+                android:layout_marginBottom="08dp"
+                android:layout_marginEnd="08dp"
+                android:layout_marginStart="08dp"
+                android:fontFamily="@font/roboto"
+                android:text="Rating Description :"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:textStyle="normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lbl_rating"
+                android:layout_marginBottom="08dp"
+                android:layout_marginEnd="08dp"
+                android:layout_marginStart="08dp"
+                android:fontFamily="@font/roboto"
+                android:text="Rating DescriptionRating Description Rating Description Rating Description "
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:layout_toEndOf="@+id/lbl_rating_ddescription" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_problem"
+            android:layout_marginBottom="08dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="08dp"
             android:background="@drawable/bg_box_rl">
 
             <TextView
@@ -42,59 +158,46 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="08dp"
                 android:layout_marginStart="08dp"
-                android:layout_below="@+id/lbl_invoiceNumber"
                 android:layout_marginTop="08dp"
                 android:fontFamily="@font/roboto"
-                android:text="PROVIDING AND INSTALLING THE CCTV CAMERA O ON SPILLWAY OF LOWER WARDHA AT DHANODI(BA) TAL ARVI,DIST WARDHA(M.S.)"
-                android:textColor="@color/colorGray"
-                android:textSize="16sp"
-                android:textStyle="normal" />
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@+id/lbl_title"
-                android:layout_marginBottom="04dp"
-                android:layout_marginEnd="08dp"
-                android:layout_marginStart="08dp"
-                android:layout_marginTop="04dp"
-                android:background="@color/colorGray" />
-
-            <TextView
-                android:id="@+id/lbl_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/view"
-                android:layout_margin="08dp"
-                android:fontFamily="@font/roboto"
-                android:text="PROVIDING AND INSTALLING THE CCTV CAMERA O ON SPILLWAY OF LOWER WARDHA AT DHANODI(BA) TAL ARVI,DIST WARDHA(M.S.)"
+                android:layout_below="@+id/lbl_invoiceNumber"
+                android:text="PROVIDING AND INSTALLING THE CCTV CAMERA "
                 android:textColor="@color/colorGray"
                 android:textSize="14sp"
                 android:textStyle="normal" />
+
+
             <TextView
                 android:id="@+id/lbl_invoiceNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lbl_product"
-                android:layout_margin="08dp"
-                android:text="Invoice Number:"
+                android:layout_marginStart="08dp"
+                android:layout_marginEnd="08dp"
+                android:layout_marginRight="08dp"
+                android:layout_marginLeft="08dp"
                 android:fontFamily="@font/roboto"
+                android:text="Invoice Number:"
                 android:textColor="@color/colorGray"
                 android:textSize="14sp"
                 android:textStyle="normal" />
+
             <TextView
                 android:id="@+id/lbl_invoiceNumber_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lbl_product"
+                android:layout_marginStart="08dp"
+                android:layout_marginEnd="08dp"
+                android:layout_marginRight="08dp"
+                android:layout_marginLeft="08dp"
                 android:layout_toEndOf="@+id/lbl_invoiceNumber"
-                android:layout_margin="08dp"
                 android:fontFamily="@font/roboto"
                 android:text="123456"
                 android:textColor="@color/colorBlack"
                 android:textSize="14sp"
                 android:textStyle="normal" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -240,63 +343,6 @@
 
 
         </RelativeLayout>
-
-        <!--Engineer Details:-->
-        <RelativeLayout
-            android:id="@+id/rl_engg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_cust"
-            android:layout_marginEnd="18dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_box_rl">
-
-            <TextView
-                android:id="@+id/lbl_Engg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="08dp"
-                android:layout_marginStart="08dp"
-                android:layout_marginTop="08dp"
-                android:fontFamily="@font/roboto"
-                android:text="Engineer Details:"
-                android:textColor="@color/colorGray"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/lbl_Engg">
-
-                <include
-                    android:id="@+id/include_pending"
-                    layout="@layout/include_rl_pending_ticket"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible" />
-
-                <include
-                    android:id="@+id/include_assign"
-                    layout="@layout/include_item_assign_ticket"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-
-                <include
-                    android:id="@+id/include_close"
-                    layout="@layout/include_item_close_ticket"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-
-            </FrameLayout>
-
-        </RelativeLayout>
-
-
     </RelativeLayout>
-
 
 </ScrollView>

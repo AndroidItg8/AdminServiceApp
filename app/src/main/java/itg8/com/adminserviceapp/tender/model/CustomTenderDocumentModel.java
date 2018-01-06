@@ -15,6 +15,16 @@ public class CustomTenderDocumentModel implements Parcelable {
     private Integer ActualDoc_fkid;
     private Integer SuperAdminStatus;
 
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        isCheck = check;
+    }
+
+    private boolean isCheck;
+
 
     public String getEmployeeStatus() {
         return EmployeeStatus;
@@ -78,6 +88,9 @@ public class CustomTenderDocumentModel implements Parcelable {
         return CREATOR;
     }
 
+    public CustomTenderDocumentModel() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -91,9 +104,8 @@ public class CustomTenderDocumentModel implements Parcelable {
         dest.writeValue(this.DocuType_fkid);
         dest.writeValue(this.ActualDoc_fkid);
         dest.writeValue(this.SuperAdminStatus);
-    }
-
-    public CustomTenderDocumentModel() {
+        dest.writeByte(this.isCheck ? (byte) 1 : (byte) 0);
+        dest.writeString(this.EmployeeStatus);
     }
 
     protected CustomTenderDocumentModel(Parcel in) {
@@ -103,6 +115,8 @@ public class CustomTenderDocumentModel implements Parcelable {
         this.DocuType_fkid = (Integer) in.readValue(Integer.class.getClassLoader());
         this.ActualDoc_fkid = (Integer) in.readValue(Integer.class.getClassLoader());
         this.SuperAdminStatus = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.isCheck = in.readByte() != 0;
+        this.EmployeeStatus = in.readString();
     }
 
     public static final Creator<CustomTenderDocumentModel> CREATOR = new Creator<CustomTenderDocumentModel>() {

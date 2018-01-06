@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,8 +27,11 @@ import itg8.com.adminserviceapp.common.CommonMethod;
 import itg8.com.adminserviceapp.common.Logs;
 import itg8.com.adminserviceapp.ticket.TicketActivity;
 import itg8.com.adminserviceapp.ticket.TicketDetailsActivity;
+import itg8.com.adminserviceapp.ticket.adapter.TicketAcceptStatusAdapter;
 import itg8.com.adminserviceapp.ticket.adapter.TicketStatusPendingAdapter;
 import itg8.com.adminserviceapp.ticket.model.TicketModel;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +57,8 @@ public class PendingFragment extends BaseFragment implements TicketActivity.Tick
     private LinearLayoutManager layoutManager;
     private int positionIndex;
     private int topView;
+    private static final int RC_CODE = 345;
+
 
 
     // TODO: Rename and change types of parameters
@@ -66,6 +72,43 @@ public class PendingFragment extends BaseFragment implements TicketActivity.Tick
     boolean isFinished = false;
     private boolean isViewVisible=false;
     private int isProgressShow=-1;
+
+    public void resetGlobalVariable() {
+        page=0;
+        noList=false;
+        isProgressShow=-1;
+        isLoading=false;
+        isFinished=false;
+        isViewVisible=false;
+
+    }
+
+    private void resetEveryThing()
+    {
+        resetGlobalVariable();
+        ((TicketActivity) this.context).PendingFragmentAttach(this);
+
+        resetAdapter();
+        resetOnCreateView();
+    }
+
+    private void resetOnCreateView() {
+        isViewVisible=true;
+        if(isProgressShow>0)
+        {
+            onProgressShow();
+        }else
+        {
+            onProgressHide();
+        }
+        init();
+    }
+
+    private void resetAdapter()
+    {
+        adapter = new TicketStatusPendingAdapter(getActivity(),this);
+
+    }
 
 
     public PendingFragment() {
@@ -123,27 +166,25 @@ public class PendingFragment extends BaseFragment implements TicketActivity.Tick
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            layoutManagerState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
+        }
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pending, container, false);
         unbinder = ButterKnife.bind(this, view);
-        if (savedInstanceState != null) {
-            layoutManagerState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
-        }
-        if(isProgressShow>0)
-        {
-            onProgressShow();
-        }else
-        {
-            onProgressHide();
-        }
-        init();
+
+        resetOnCreateView();
         return view;
     }
 
     private void init() {
-        isViewVisible=true;
         checkNoList();
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -156,7 +197,12 @@ public class PendingFragment extends BaseFragment implements TicketActivity.Tick
         super.onDestroyView();
         unbinder.unbind();
         isViewVisible=false;
-        noList=false;
+        if(page!=0 )
+            noList = false;
+        else
+            noList=true;
+        isProgressShow=-1;
+
 
     }
 
@@ -170,12 +216,20 @@ public class PendingFragment extends BaseFragment implements TicketActivity.Tick
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
+        Logs.d("OnAttach PendingFragment:");
         ((TicketActivity) this.context).PendingFragmentAttach(this);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        isViewVisible = false;
+        if(page!=0 )
+            noList = false;
+        else
+            noList=true;
+
+
         ((TicketActivity) this.context).onDetach();
 
     }
@@ -210,8 +264,10 @@ public class PendingFragment extends BaseFragment implements TicketActivity.Tick
      * so we will show use a page about there is no list available.
      */
     public void noDataAvailableToSetInAdapterInPageOne() {
-        noList = true;
-        checkNoList();
+        if(page==0)
+             noList = true;
+        if(isViewVisible)
+            checkNoList();
     }
 
     private void checkNoList() {
@@ -263,7 +319,7 @@ public class PendingFragment extends BaseFragment implements TicketActivity.Tick
         Intent intent = new Intent(getActivity(), TicketDetailsActivity.class);
         intent.putExtra(CommonMethod.TICKET,ticketModel);
         intent.putExtra(CommonMethod.from, CommonMethod.TICKET_STATUS_OPEN);
-        startActivity(intent);
+      startActivityForResult(intent,RC_CODE);
 
 
     }
@@ -291,4 +347,30 @@ public class PendingFragment extends BaseFragment implements TicketActivity.Tick
             recyclerView.getLayoutManager().onRestoreInstanceState(layoutManagerState);
         }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Logs.d("OnStart");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Logs.d("OnStop");
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==RC_CODE && resultCode==RESULT_OK)
+        {
+            resetEveryThing();
+            ((TicketActivity) this.context).refreshFragment(this);
+        }
+
+    }
+
+
+
 }

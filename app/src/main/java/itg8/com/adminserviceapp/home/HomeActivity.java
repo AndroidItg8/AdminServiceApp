@@ -2,8 +2,6 @@ package itg8.com.adminserviceapp.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -14,10 +12,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import itg8.com.adminserviceapp.R;
 import itg8.com.adminserviceapp.common.CommonMethod;
+import itg8.com.adminserviceapp.common.Logs;
 import itg8.com.adminserviceapp.common.Prefs;
 import itg8.com.adminserviceapp.enquiry.EnquiryActivity;
 import itg8.com.adminserviceapp.feedback.FeedbackActivity;
@@ -74,6 +75,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     TextView lblTender;
     @BindView(R.id.card_tender)
     CardView cardTender;
+    @BindView(R.id.img_feedback)
+    ImageView imgFeedback;
+    @BindView(R.id.lbl_feedback)
+    TextView lblFeedback;
+    @BindView(R.id.card_feedback)
+    CardView cardFeedback;
     private boolean isDestroyed = false;
 
 
@@ -85,15 +92,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         init();
+        getFirebaseToken();
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    private void getFirebaseToken() {
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Logs.d("Token:"+refreshedToken);
+        if (!Prefs.getString(CommonMethod.FBASE_TOKEN, "").equalsIgnoreCase(refreshedToken)) {
+            CommonMethod.sendRegistrationToServer(refreshedToken, getApplicationContext());
+        }
+
     }
 
     private void init() {
@@ -102,7 +110,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         cardGst.setOnClickListener(this);
         cardSalesPerson.setOnClickListener(this);
         cardTicket.setOnClickListener(this);
-         cardTender.setOnClickListener(this);
+        cardTender.setOnClickListener(this);
+        cardFeedback.setOnClickListener(this);
     }
 
     private void checkLogin() {
@@ -158,6 +167,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.card_tender:
                 intent = new Intent(getApplicationContext(), TenderActivity.class);
+                break;
+            case R.id.card_feedback:
+                intent = new Intent(getApplicationContext(), FeedbackActivity.class);
                 break;
         }
         callActivity(intent);

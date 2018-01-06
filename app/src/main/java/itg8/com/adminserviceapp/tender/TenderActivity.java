@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -188,9 +189,6 @@ public class TenderActivity extends AppCompatActivity implements TenderMVP.Tende
         TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(color);
         textView.setMaxLines(2);
-        snackbar.show();
-
-
         snackbar.setAction("OK", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -336,6 +334,17 @@ public class TenderActivity extends AppCompatActivity implements TenderMVP.Tende
 
     public void onDetach() {
         presenter.onDestroyed();
+    }
+
+    public void refreshSubmitFragment(Fragment pendingTenderFragment) {
+        if(this.submitListener!= null)
+            presenter.downloadSubmitedTenderList(getString(R.string.url_submited_tender),CommonMethod.FROM_ACCEPT);
+    }
+
+    public void refreshRejectFragment(SubmitedTenderFragment submitedTenderFragment) {
+       if( this.expireListener!= null)
+        presenter.downloadRejectedTender(getString(R.string.url_tender_rejected),CommonMethod.FROM_REJECT);
+
     }
 
 

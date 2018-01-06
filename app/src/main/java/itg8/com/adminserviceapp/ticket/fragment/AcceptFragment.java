@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,8 @@ import itg8.com.adminserviceapp.ticket.TicketDetailsActivity;
 import itg8.com.adminserviceapp.ticket.adapter.TicketAcceptStatusAdapter;
 import itg8.com.adminserviceapp.ticket.model.TicketModel;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AcceptFragment#newInstance} factory method to
@@ -40,6 +43,7 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String SAVED_LAYOUT_MANAGER = "SAVED_LAYOUT_MANAGER";
+    private static final int RC_CODE = 345;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     Unbinder unbinder;
@@ -49,24 +53,42 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
     ImageView imgNo;
     @BindView(R.id.rl_no_item)
     RelativeLayout rlNoItem;
-
-
+    boolean isLoading = false;
+    boolean isFinished = false;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private Context context;
     private boolean isViewVisible = false;
     private int page = 0;
-    boolean isLoading = false;
-    boolean isFinished = false;
     private TicketAcceptStatusAdapter adapter;
-    private boolean noList=false;
-    private int isProgressShow=-1;
+    private boolean noList = false;
+    private int isProgressShow = -1;
     private Parcelable layoutManagerState;
     private LinearLayoutManager layoutManager;
     private int positionIndex;
     private int topView;
+    public void resetGlobalVariable() {
+        page=0;
+        noList=false;
+        isProgressShow=-1;
+        isLoading=false;
+        isFinished=false;
 
+    }
+
+    private void resetEveryThing()
+    {
+        resetGlobalVariable();
+        ((TicketActivity) this.context).AcceptFragmentAttach(this);
+        resetAdapter();
+        resetOnCreateView();
+    }
+
+    private void resetAdapter()
+    {
+        adapter = new TicketAcceptStatusAdapter(getActivity(), this);
+    }
 
     public AcceptFragment() {
         // Required empty public constructor
@@ -90,6 +112,7 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,10 +120,16 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        adapter=new TicketAcceptStatusAdapter(getActivity(), this);
+        adapter = new TicketAcceptStatusAdapter(getActivity(), this);
     }
 
-
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            layoutManagerState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
+        }
+        super.onActivityCreated(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,23 +137,25 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_accept, container, false);
         unbinder = ButterKnife.bind(this, view);
-        if (savedInstanceState != null) {
-            layoutManagerState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
-        }
-        if(isProgressShow>0)
-        {
+
+      resetOnCreateView();
+        return view;
+    }
+
+    private void resetOnCreateView() {
+        isViewVisible=true;
+        if (isProgressShow > 0) {
             onProgressShow();
-        }else
-        {
+        } else {
             onProgressHide();
         }
         init();
-        return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Logs.d("OnAttach AcceptFragment:");
         this.context = context;
         ((TicketActivity) this.context).AcceptFragmentAttach(this);
 
@@ -137,10 +168,10 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
         isLoading = true;
         ((TicketActivity) context).onLoadMoreItem(page, from);
     }
+
     @Override
     public int getPage() {
         Logs.d("OnRejectedTenderList: Page" + page);
-
         return page;
     }
 
@@ -156,7 +187,7 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
 
     private void init() {
         checkNoList();
-        layoutManager= new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(getRecyclerViewScroll(layoutManager, CommonMethod.FROM_PENDING));
         recyclerView.setAdapter(adapter);
@@ -167,8 +198,8 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        noList=false;
-        isViewVisible=false;
+        noList = false;
+        isViewVisible = false;
     }
 
 
@@ -182,8 +213,9 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
     public void onDetach() {
         super.onDetach();
         isViewVisible = false;
-        noList=false;
+        noList = false;
         ((TicketActivity) this.context).onDetach();
+
 
     }
 
@@ -225,7 +257,8 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
 
     @Override
     public void onFinished(boolean b) {
-        isFinished = b;}
+        isFinished = b;
+    }
 
     @Override
     public void isLoading(boolean b) {
@@ -234,7 +267,7 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
     }
 
     @Override
-    public void onEmptyList() {
+    public void  onEmptyList() {
         noDataAvailableToSetInAdapterInPageOne();
     }
 
@@ -243,7 +276,7 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
         if (isViewVisible)
             progressView.setVisibility(View.GONE);
         else
-            isProgressShow=0;
+            isProgressShow = 0;
     }
 
     @Override
@@ -251,12 +284,14 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
         if (isViewVisible)
             progressView.setVisibility(View.VISIBLE);
         else
-            isProgressShow=1;
+            isProgressShow = 1;
     }
 
     private void checkList(List<TicketModel> list) {
         adapter.addItems(list);
+        isProgressShow = 0;
     }
+
     private void checkNoList() {
         if (noList)
             CommonMethod.showHideItem(rlNoItem, recyclerView);
@@ -268,9 +303,9 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
     @Override
     public void onItemClicked(int position, TicketModel ticketModel) {
         Intent intent = new Intent(getActivity(), TicketDetailsActivity.class);
-        intent.putExtra(CommonMethod.TICKET,ticketModel);
+        intent.putExtra(CommonMethod.TICKET, ticketModel);
         intent.putExtra(CommonMethod.from, CommonMethod.TICKET_STATUS_ASSIGN);
-        startActivity(intent);
+        startActivityForResult(intent, RC_CODE);
     }
 
     @Override
@@ -296,4 +331,19 @@ public class AcceptFragment extends BaseFragment implements TicketActivity.Ticke
             recyclerView.getLayoutManager().onRestoreInstanceState(layoutManagerState);
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_CODE && resultCode == RESULT_OK) {
+            //((TicketActivity) this.context).refreshFragment(this);
+//             FragmentTransaction transaction = getFragmentManager().beginTransaction().replace()
+
+            resetEveryThing();
+        }
+
+
+    }
+
+
 }

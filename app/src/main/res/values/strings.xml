@@ -11,6 +11,7 @@
     <string name="title_activity_feedback">Feedback</string>
     <string name="title_activity_gst">GST</string>
     <string name="empty">Field is empty</string>
+    <string name="rps">\u20B9</string>
     <string name="invalid_email">Inavalid Email</string>
     <string name="invalid_pass">minimum alteast 6 password</string>
     <string name="url_login">/Token</string>
@@ -19,7 +20,7 @@
     <string name="url_feedback">/api/CustomerApp/FeedBackList</string>
     <string name="url_enquiry">/api/CustomerApp/EnquiryListList</string>
     <string name="title_activity_tender">Tender</string>
-    <string name="title_activity_tender_details">Tender Details</string>
+    <string name="title_activity_tender_details"></string>
     <string name="url_pending_tender">/api/CustomerApp/PendingTenderList</string>
     <string name="url_sales_person">/api/CustomerApp/SalesPersonList</string>
     <string name="url_add_eng">/api/CustomerApp/Register</string>
@@ -32,7 +33,7 @@
     <string name="url_tender_rejected">/api/CustomerApp/RejectTenderList</string>
     <string name="url_delete_engg">/api/CustomerApp/DeleteRegister</string>
     <string name="no_more_list">No More List Available..!!!</string>
-    <string name="select_item">Please check any  doucment item in the list.</string>
+    <string name="select_item">Please check any  document item in the list.</string>
     <string name="url_upadte_tender_document">/api/CustomerApp/UpdateTenderRequitedDoc</string>
     <string name="title_sending_mail">Send Document Mail</string>
     <string name="subject">REG : </string>
@@ -40,4 +41,8 @@
     <string name="title_activity_ticket_details">Ticket Details</string>
     <string name="url_update_ticket">/api/CustomerApp/TicketRaise</string>
     <string name="url_firebase_token">/api/CustomerApp/NotificationDetails</string>
+    <string name="title_activity_enquiry_details">Enquiry Details</string>
+    <string name="default_notification_channel_id">defult channel id</string>
+    <string name="title_activity_feedback_details">Feedback Details</string>
+    <string name="url_update_tender">/api/CustomerApp/UpdateTenderMaster</string>
 </resources>

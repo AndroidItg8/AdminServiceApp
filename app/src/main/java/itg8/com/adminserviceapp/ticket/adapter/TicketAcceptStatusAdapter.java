@@ -71,9 +71,10 @@ public class TicketAcceptStatusAdapter extends RecyclerView.Adapter<RecyclerView
                 if(list.get(position).getProblem().size()>0)
                 holderTicket.lblProblem.setText(CommonMethod.checkEmpty(list.get(position).getProblem().get(0).getProblem()));
 
-                holderTicket.lblInvoiceNumber.setText(String.valueOf(list.get(position).getInvoiceFkid()));
+                holderTicket.lblEngName.setVisibility(View.VISIBLE);
+                holderTicket.lblInvoiceNumberValue.setText(String.valueOf(list.get(position).getInvoiceFkid()));
 
-                holderTicket.lblEngName.setText(CommonMethod.checkEmpty(list.get(position).getAssignedpersonname()));
+                holderTicket.lblEngNameValue.setText(CommonMethod.checkEmpty(list.get(position).getAssignedpersonname()));
 
                 Calendar date = (CommonMethod.ConvertStringToDateWithoutMillies(list.get(position).getAssignDate()));
                 String year = String.valueOf(date.get(Calendar.YEAR));
@@ -131,10 +132,14 @@ public class TicketAcceptStatusAdapter extends RecyclerView.Adapter<RecyclerView
         TextView lblYear;
         @BindView(R.id.lbl_invoiceNumber)
         TextView lblInvoiceNumber;
+        @BindView(R.id.lbl_invoiceNumber_value)
+        TextView lblInvoiceNumberValue;
         @BindView(R.id.lbl_problem)
         TextView lblProblem;
         @BindView(R.id.lbl_engName)
         TextView lblEngName;
+        @BindView(R.id.lbl_engName_value)
+        TextView lblEngNameValue;
         TicketModel model;
         Cust custModel;
         Problem problemModel;

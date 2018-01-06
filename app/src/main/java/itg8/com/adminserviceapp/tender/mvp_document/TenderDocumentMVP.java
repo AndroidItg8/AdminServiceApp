@@ -22,7 +22,6 @@ public interface TenderDocumentMVP {
     }
     public interface TenderDocumentPresenter  {
         void onDestroyed();
-
         void sendTenderDocumentModelList(String url, List<CustomTenderDocumentModel> list);
 
 

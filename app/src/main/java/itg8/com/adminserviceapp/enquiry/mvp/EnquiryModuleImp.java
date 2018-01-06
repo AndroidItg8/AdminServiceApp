@@ -30,7 +30,7 @@ public class EnquiryModuleImp implements EnquiryMVP.EnquiryModule {
                  {
                      if(response.body()!= null)
                      {
-                         listner.onDownloadedEnquiryList(response.body());
+                         listner.onDownloadedEnquiryList(response.body(),page);
                      }else {
                          if(page==0)
                          {

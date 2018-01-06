@@ -38,10 +38,9 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="An ISO Number"
+                android:text="An ISO 14001-2015"
                 android:textColor="@color/colorWhite"
                 android:fontFamily="@font/roboto_medium"
-
                 android:textSize="16sp"
                 android:visibility="visible" />
 
@@ -52,10 +51,9 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="An ISO Number"
+                android:text="An ISO 14001-2015"
                 android:textColor="@color/colorWhite"
                 android:fontFamily="@font/roboto_medium"
-
                 android:textSize="16sp"
                 android:visibility="visible" />
         </LinearLayout>
@@ -264,7 +262,6 @@
                         android:layout_marginTop="5dp"
                         android:text="Enquiry"
                         android:fontFamily="@font/roboto_medium"
-
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/textview" />
 
@@ -272,10 +269,18 @@
 
             </android.support.v7.widget.CardView>
         </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
         <android.support.v7.widget.CardView
             android:id="@+id/card_tender"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="10dp"
@@ -308,7 +313,6 @@
                     android:layout_marginTop="5dp"
                     android:text="Tender"
                     android:fontFamily="@font/roboto_medium"
-
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textview" />
 
@@ -316,7 +320,49 @@
 
         </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_feedback"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_box">
+
+                <ImageView
+                    android:id="@+id/img_feedback"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    app:srcCompat="@drawable/ic_feedback_black_24dp" />
+
+                <TextView
+                    android:id="@+id/lbl_feedback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_feedback"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="Feedback"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/textview" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

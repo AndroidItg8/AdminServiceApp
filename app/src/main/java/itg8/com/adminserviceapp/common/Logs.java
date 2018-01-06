@@ -20,7 +20,7 @@ import android.util.Log;
 
 public class Logs {
 	
-	private static final String TAG = "WMCApp";
+	private static final String TAG = "Admin Service App";
 	public static boolean mIsEnabled = true;
 	
 	

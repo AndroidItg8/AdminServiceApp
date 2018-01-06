@@ -133,9 +133,10 @@ public class FeedbackPresenterImp extends BaseWeakPresenter<FeedbackMVP.Feedback
 
     private void getItems(int page, int limit) {
         if(hasView()){
-            getView().onPaginationError(false,1);
-            getView().onShowPaginationLoading(true,1);
-            getView().onProgressShow();
+            if(page!=0)
+                getView().onShowPaginationLoading(true,1);
+            else
+                getView().onProgressShow();
             isLoading=true;
             module.onDownloadedFeedbackList(url,page,limit,this);
 

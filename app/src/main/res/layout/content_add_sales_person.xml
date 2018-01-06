@@ -22,6 +22,7 @@
         android:id="@+id/input_layout_personName"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
+        android:importantForAutofill="noExcludeDescendants"
         android:layout_height="wrap_content">
 
         <EditText
@@ -43,6 +44,8 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/input_layout_personName"
         android:layout_marginTop="10dp"
+        android:importantForAutofill="noExcludeDescendants"
+
         android:layout_height="wrap_content">
 
         <EditText
@@ -64,6 +67,8 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/input_layout_mobile"
         android:layout_marginTop="10dp"
+        android:importantForAutofill="noExcludeDescendants"
+
         android:layout_height="wrap_content">
 
         <EditText
@@ -85,6 +90,8 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/input_layout_another_mobile"
         android:layout_marginTop="10dp"
+        android:importantForAutofill="noExcludeDescendants"
+
         android:layout_height="wrap_content">
 
         <EditText
@@ -106,6 +113,8 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/input_layout_email"
         android:layout_marginTop="10dp"
+        android:importantForAutofill="noExcludeDescendants"
+
         android:layout_height="wrap_content">
 
         <EditText

@@ -53,7 +53,7 @@ public class Cust implements Parcelable
     private Object Fax;
     @SerializedName("Telephoneno")
     @Expose
-    private Object Telephoneno;
+    private String Telephoneno;
     @SerializedName("mobileno")
     @Expose
     private String mobileno;
@@ -117,7 +117,7 @@ public class Cust implements Parcelable
             instance.previousYearBalance = ((Object) in.readValue((Object.class.getClassLoader())));
             instance.State = ((Object) in.readValue((Object.class.getClassLoader())));
             instance.Fax = ((Object) in.readValue((Object.class.getClassLoader())));
-            instance.Telephoneno = ((Object) in.readValue((Object.class.getClassLoader())));
+            instance.Telephoneno = ((String) in.readValue((Object.class.getClassLoader())));
             instance.mobileno = ((String) in.readValue((String.class.getClassLoader())));
             instance.email = ((String) in.readValue((String.class.getClassLoader())));
             instance.contactPersonName = ((String) in.readValue((String.class.getClassLoader())));
@@ -381,7 +381,7 @@ public class Cust implements Parcelable
      * @return
      *     The Telephoneno
      */
-    public Object getTelephoneno() {
+    public String getTelephoneno() {
         return Telephoneno;
     }
 
@@ -390,7 +390,7 @@ public class Cust implements Parcelable
      * @param Telephoneno
      *     The Telephoneno
      */
-    public void setTelephoneno(Object Telephoneno) {
+    public void setTelephoneno(String Telephoneno) {
         this.Telephoneno = Telephoneno;
     }
 

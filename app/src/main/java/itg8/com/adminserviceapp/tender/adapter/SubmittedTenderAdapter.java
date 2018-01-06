@@ -31,7 +31,6 @@ public class SubmittedTenderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private List<PendingTenderModel> list;
 
     public SubmittedTenderAdapter(Context context, SubmittedTenderAdapter.ItemClickedListener listener) {
-
         this.context = context;
         this.list = new ArrayList<>();
         this.listener = listener;
@@ -58,7 +57,8 @@ public class SubmittedTenderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((SubmittedTenderAdapter.SubmitedViewHolder) holder).model = list.get(position);
             ((SubmittedTenderAdapter.SubmitedViewHolder) holder).lblTitle.setText(CommonMethod.checkEmpty(((SubmittedTenderAdapter.SubmitedViewHolder) holder).model.getTitle()));
             ((SubmittedTenderAdapter.SubmitedViewHolder) holder).lblDescription.setText(CommonMethod.checkEmpty(((SubmittedTenderAdapter.SubmitedViewHolder) holder).model.getDescription()));
-            ((SubmittedTenderAdapter.SubmitedViewHolder) holder).lblEndDateValue.setText(CommonMethod.checkEmpty(((SubmittedTenderAdapter.SubmitedViewHolder) holder).model.getClosedDate()));
+            ((SubmittedTenderAdapter.SubmitedViewHolder) holder).lblEndDateValue.setText(CommonMethod.checkEmpty(((SubmittedTenderAdapter.SubmitedViewHolder) holder).model.getTenderFeeIn()));
+            ((SubmitedViewHolder) holder).lblPrice.setText(CommonMethod.checkEmpty(((SubmittedTenderAdapter.SubmitedViewHolder) holder).model.getEMDAMT()));
             ((SubmittedTenderAdapter.SubmitedViewHolder) holder).lblOpenDateValue.setText(CommonMethod.checkEmpty(((SubmittedTenderAdapter.SubmitedViewHolder) holder).model.getOpenDate()));
         }
     }

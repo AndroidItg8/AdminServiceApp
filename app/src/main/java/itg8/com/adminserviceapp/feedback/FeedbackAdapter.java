@@ -30,12 +30,15 @@ public class FeedbackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final List<FeedbackModel> list;
 
 
+
     private Context context;
     private static final int LOADING_VIEW = 1;
     private static final int NORMAL_VIEW = 2;
+    ItemClickedListener listener;
 
-    public FeedbackAdapter(Context context) {
+    public FeedbackAdapter(Context context, ItemClickedListener listener) {
         this.context = context;
+        this.listener = listener;
         list = new ArrayList<>();
 
     }
@@ -71,8 +74,8 @@ public class FeedbackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder.lblOtp.setText(day);
                 holder.lblProblem.setText(problem);
                 holder.lblProductName.setText(product);
-                holder.lblStatus.setText(status);
-                holder.lblInvoiceNumber.setText(invoiceNumber);
+                holder.lblEnggNameValue.setText(status);
+                holder.lblInvoiceNumberValue.setText(invoiceNumber);
                 holder.lblYear.setText(month + "-" + year);
 
             }
@@ -81,22 +84,7 @@ public class FeedbackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    private String getStatus(int status) {
-        String statusValue = null;
-        switch (status) {
-            case CommonMethod.TICKET_STATUS_ASSIGN:
-                statusValue = "ASSIGN TICKEt";
-                break;
-            case CommonMethod.TICKET_STATUS_CLOSE:
-                statusValue = "CLOSE TICKET";
-                break;
-            case CommonMethod.TICKET_STATUS_OPEN:
-                statusValue = "OPEN TICKET";
-                break;
 
-        }
-        return statusValue;
-    }
 
     @Override
     public int getItemCount() {
@@ -118,16 +106,28 @@ public class FeedbackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView lblYear;
         @BindView(R.id.lbl_productName)
         TextView lblProductName;
-        @BindView(R.id.lbl_invoiceNumber)
-        TextView lblInvoiceNumber;
+
         @BindView(R.id.lbl_problem)
         TextView lblProblem;
-        @BindView(R.id.lbl_status)
-        TextView lblStatus;
+        @BindView(R.id.lbl_invoiceNumber)
+        TextView lblInvoiceNumber;
+        @BindView(R.id.lbl_invoiceNumber_value)
+        TextView lblInvoiceNumberValue;
+        @BindView(R.id.lbl_engg_name_value)
+        TextView lblEnggNameValue;
+        @BindView(R.id.lbl_engg_name)
+        TextView lblEnggName;
+
 
         public FeedbackViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClicked(getAdapterPosition(),list.get(getAdapterPosition()));
+                }
+            });
         }
     }
 
@@ -147,5 +147,9 @@ public class FeedbackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         list.remove(itemRemoved);
         notifyItemRemoved(itemRemoved);
         notifyItemRangeChanged(itemRemoved, list.size());
+    }
+
+    public interface ItemClickedListener{
+        void onItemClicked(int position,FeedbackModel model );
     }
 }

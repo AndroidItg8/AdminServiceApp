@@ -1,10 +1,12 @@
 package itg8.com.adminserviceapp.ticket;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -42,6 +44,8 @@ public class TicketActivity extends AppCompatActivity implements TicketMVP.Ticke
     TicketPendingListListener ticketPendingListListener;
     TicketAcceptListListner ticketAcceptListListner;
     TicketCloseListListner ticketCloseListListner;
+    private static final int RC_CODE = 345;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +56,6 @@ public class TicketActivity extends AppCompatActivity implements TicketMVP.Ticke
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         presenter = new TicketPresenterImp(this);
-
-
         init();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -75,8 +77,8 @@ public class TicketActivity extends AppCompatActivity implements TicketMVP.Ticke
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new PendingFragment(), "Pending");
-        adapter.addFragment(new CloseFragment(), "Close");
         adapter.addFragment(new AcceptFragment(), "Accept");
+        adapter.addFragment(new CloseFragment(), "Close");
         viewPager.setAdapter(adapter);
     }
 
@@ -343,6 +345,15 @@ public class TicketActivity extends AppCompatActivity implements TicketMVP.Ticke
 
     }
 
+    public void refreshFragment(Fragment pendingFragment) {
+       // setupViewPager(viewPager);
+        if(this.ticketCloseListListner != null)
+        {
+            this.ticketCloseListListner.onRefreshCloseFragment();
+        }
+    }
+
+
     public interface TicketPendingListListener {
         void onPendingTicketList(List<TicketModel> list);
         void onPaginationError(boolean show);
@@ -377,5 +388,7 @@ public class TicketActivity extends AppCompatActivity implements TicketMVP.Ticke
         void onEmptyList();
         void onProgressHide();
         void onProgressShow();
+
+        void onRefreshCloseFragment();
     }
 }

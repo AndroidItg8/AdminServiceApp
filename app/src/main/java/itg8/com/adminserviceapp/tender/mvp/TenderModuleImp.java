@@ -131,7 +131,6 @@ public class TenderModuleImp implements TenderMVP.TenderModule {
                     if(response.body().size()>0)
                     {
                         listner.onDownloadedRejectedTenderList(response.body(),from, page);
-
                     }else {
                         if (page == 0) {
                             listner.emptyList(from);

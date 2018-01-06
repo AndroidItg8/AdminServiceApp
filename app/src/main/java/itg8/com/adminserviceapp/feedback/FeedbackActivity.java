@@ -1,5 +1,6 @@
 package itg8.com.adminserviceapp.feedback;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,7 +26,7 @@ import itg8.com.adminserviceapp.feedback.model.FeedbackModel;
 import itg8.com.adminserviceapp.feedback.mvp.FeedbackMVP;
 import itg8.com.adminserviceapp.feedback.mvp.FeedbackPresenterImp;
 
-public class FeedbackActivity extends AppCompatActivity implements FeedbackMVP.FeedbackView {
+public class FeedbackActivity extends AppCompatActivity implements FeedbackMVP.FeedbackView, FeedbackAdapter.ItemClickedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -71,7 +72,7 @@ public class FeedbackActivity extends AppCompatActivity implements FeedbackMVP.F
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addOnScrollListener(presenter.recyclerViewScrllListener(linearLayoutManager));
-        adapter = new FeedbackAdapter(getApplicationContext());
+        adapter = new FeedbackAdapter(getApplicationContext(),this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -164,10 +165,7 @@ public class FeedbackActivity extends AppCompatActivity implements FeedbackMVP.F
 
     @Override
     public void onPaginationError(boolean show, int from) {
-        if(show)
-        {
 
-        }
 
     }
 
@@ -192,5 +190,12 @@ public class FeedbackActivity extends AppCompatActivity implements FeedbackMVP.F
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClicked(int position, FeedbackModel model) {
+        Intent intent = new Intent(getApplicationContext(),FeedbackDetailsActivity.class);
+        intent.putExtra(CommonMethod.FEEDBACK,model);
+        startActivity(intent);
     }
 }

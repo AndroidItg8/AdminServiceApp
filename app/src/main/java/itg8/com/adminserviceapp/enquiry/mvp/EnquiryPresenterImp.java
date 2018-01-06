@@ -129,8 +129,12 @@ public class EnquiryPresenterImp extends BaseWeakPresenter<EnquiryMVP.EnquiryVie
 
     private void getItems(int page, int limit) {
         if(hasView()){
-            getView().onPaginationError(false,1);
-            getView().onShowPaginationLoading(true,1);
+            if (page != 0)
+                getView().onShowPaginationLoading(true, 1);
+            else
+                getView().onProgressShow();
+
+           // getView().onPaginationError(false,1);
             isLoading=true;
             module.onDownloadedEnquiryList(url,page,limit,this);
 
@@ -138,10 +142,14 @@ public class EnquiryPresenterImp extends BaseWeakPresenter<EnquiryMVP.EnquiryVie
     }
 
     @Override
-    public void onDownloadedEnquiryList(List<EnquiryModel> list) {
+    public void onDownloadedEnquiryList(List<EnquiryModel> list, int page) {
         if(hasView()){
-//            getView().onShowPaginationLoading(false,1);
             getView().onProgressHide();
+
+            if(page!=0)
+            getView().onShowPaginationLoading(false,1);
+
+
             if(list.size()>0)
                 getView().getEnguiryList(list);
             else {

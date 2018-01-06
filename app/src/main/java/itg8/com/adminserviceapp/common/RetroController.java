@@ -50,7 +50,8 @@ public interface RetroController {
                               @Field("UserRoles") String employee,
                               @Field("Mobileno") String mobile,
                               @Field("Name") String person,
-                              @Field("Address") String address);
+                              @Field("Address") String address,
+                              @Field("Telephoneno") String anotherMobile);
 
     //    pkid:36
 //    customer_Name:sachin jadav
@@ -97,25 +98,31 @@ public interface RetroController {
     Call<List<FeedbackModel>> getFeedbackList(@Url String url,
                                               @Query("PageNo") int page,
                                               @Query("PageSize") int limit);
+
     @GET
     Call<List<TicketModel>> getOpenTicketList(@Url String url,
-                                          @Query("PageNo") int page,
-                                          @Query("PageSize") int limit,
-                                          @Query("ST")int status);
-  @GET
+                                              @Query("PageNo") int page,
+                                              @Query("PageSize") int limit,
+                                              @Query("ST") int status);
+
+    @GET
     Call<List<TicketModel>> getCloseTicketList(@Url String url,
-                                          @Query("PageNo") int page,
-                                          @Query("PageSize") int limit,
-                                          @Query("ST")int status);
-  @GET
+                                               @Query("PageNo") int page,
+                                               @Query("PageSize") int limit,
+                                               @Query("ST") int status);
+
+    @GET
     Call<List<TicketModel>> getAcceptTicketList(@Url String url,
-                                          @Query("PageNo") int page,
-                                          @Query("PageSize") int limit,
-                                          @Query("ST")int status);
+                                                @Query("PageNo") int page,
+                                                @Query("PageSize") int limit,
+                                                @Query("ST") int status);
 
-  @POST
-    Call<StatusModel> updateTicket(@Url String url,@Body TicketModel model);
-  @POST
+    @POST
+    Call<StatusModel> updateTicket(@Url String url, @Body TicketModel model);
 
-    Call<StatusModel> sendFirebaseTokenToServer(@Url String url,@Body CommonMethod.JsonObject jsonObjectModel);
+    @POST
+    Call<StatusModel> sendFirebaseTokenToServer(@Url String url, @Body CommonMethod.JsonObject jsonObjectModel);
+
+    @POST
+    Call<StatusModel> updateTender(@Url String url, @Body PendingTenderModel model);
 }

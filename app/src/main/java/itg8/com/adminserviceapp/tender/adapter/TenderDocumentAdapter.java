@@ -54,9 +54,8 @@ public class TenderDocumentAdapter extends RecyclerView.Adapter<TenderDocumentAd
         holder.docTypeModel = holder.docModel.getDocType();
         holder.lblTitle.setText(CommonMethod.checkEmpty(holder.model.get(0).getTenderActualDocument())+""+ CommonMethod.checkEmpty(holder.docTypeModel.get(0).getDocumentTypeName()));
 
-
-        if (holder.docModel.isChecked()) {
-            holder.chkDoc.setChecked(holder.docModel.isChecked());
+        if (holder.docModel.getSuperAdminStatus().equalsIgnoreCase("1")) {
+            holder.chkDoc.setChecked(true);
         } else {
             holder.chkDoc.setChecked(false);
         }
@@ -71,7 +70,7 @@ public class TenderDocumentAdapter extends RecyclerView.Adapter<TenderDocumentAd
     }
 
     public interface DocumentItemClickedListener {
-        void onDocumentClickedItem(int position, DocName model);
+        void onDocumentClickedItem(int position, DocumentModel model);
 
         void onDocumnetCheckItem(int position, DocumentModel model, boolean b, List<DocumentModel> list);
     }
@@ -95,7 +94,7 @@ public class TenderDocumentAdapter extends RecyclerView.Adapter<TenderDocumentAd
             imgEmail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onDocumentClickedItem(getAdapterPosition(), list.get(getAdapterPosition()).getDocName().get(getAdapterPosition()));
+                    listener.onDocumentClickedItem(getAdapterPosition(), list.get(getAdapterPosition()));
                 }
             });
             chkDoc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

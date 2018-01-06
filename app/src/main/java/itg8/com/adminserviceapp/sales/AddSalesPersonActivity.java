@@ -30,6 +30,7 @@ public class AddSalesPersonActivity extends AppCompatActivity implements View.On
     private static final boolean REMOVE_FOCUS = false;
     private static final int FROM_SAVE = 0;
     private static final int FROM_FAIL = 1;
+    private static final String NOT_AVAILABLE = "NOT_AVAILABLE";
     BtnType type;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -59,7 +60,6 @@ public class AddSalesPersonActivity extends AppCompatActivity implements View.On
     TextInputLayout inputLayoutEmail;
     @BindView(R.id.progressView)
     ProgressBar progressView;
-    OnSnackbarClicked listener;
     private SalesPersonAddMVP.SalesPersonAddPresenter presenter;
     private Snackbar snackbar;
     private SalesPersonModel model;
@@ -84,8 +84,8 @@ public class AddSalesPersonActivity extends AppCompatActivity implements View.On
         if (getIntent().hasExtra(CommonMethod.SALES_PERSON)) {
             model = getIntent().getParcelableExtra(CommonMethod.SALES_PERSON);
             invalidateOptionsMenu();
-
             setEditButtonWithContent();
+
         } else {
             setSaveButtonWithContent();
         }
@@ -104,6 +104,7 @@ public class AddSalesPersonActivity extends AppCompatActivity implements View.On
         btnSave.setText("EDIT");
         changeFocusAllEditText(REMOVE_FOCUS);
         type = BtnType.EDIT;
+
     }
 
     private void setUpdateButtonWithContent() {
@@ -114,18 +115,46 @@ public class AddSalesPersonActivity extends AppCompatActivity implements View.On
 
     }
 
+    @Override
+    public void showAllUpdateValues(String name, String mobile, String anotherMobile, String address, String email) {
+        if(model!= null) {
+            model.setEmail(email);
+            model.setCustomerName(name);
+            model.setAddressLine1(address);
+            model.setMobileno(anotherMobile);
+        }
+
+    }
+
     private void setAllEditTextByModel(SalesPersonModel model) {
-        inputPersonName.setText(model.getCustomerName());
-        inputEmail.setText(CommonMethod.checkEmpty(model.getEmail()));
-        inputMobile.setText(CommonMethod.checkEmpty(model.getMobileno()));
-        inputAnotherMobile.setText(CommonMethod.checkEmpty(model.getMobileno()));
+        if (model.getCustomerName() != null)
+            inputPersonName.setText(model.getCustomerName());
+        else
+            inputLayoutPersonName.setHint(NOT_AVAILABLE);
+        if (model.getEmail() != null)
+            inputEmail.setText(model.getEmail());
+        else
+            inputLayoutEmail.setHint(NOT_AVAILABLE);
+        if (model.getMobileno() != null)
+            inputMobile.setText(model.getMobileno());
+        else
+            inputLayoutMobile.setHint(NOT_AVAILABLE);
+        if (model.getMobileno() != null)
+            inputAnotherMobile.setText(model.getMobileno());
+        else
+            inputLayoutAnotherMobile.setHint(NOT_AVAILABLE);
+
+
+//        inputEmail.setText(CommonMethod.checkEmpty(model.getEmail()));
+//        inputMobile.setText(CommonMethod.checkEmpty(model.getMobileno()));
+//        inputAnotherMobile.setText(CommonMethod.checkEmpty(model.getMobileno()));
 
         String address = (CommonMethod.checkNull(model.getAddressLine1())) +
                 (CommonMethod.checkNull(model.getAddressLine2())) +
                 ((CommonMethod.checkNull(model.getAddressLine3())));
 
         if (TextUtils.isEmpty(address))
-            inputAddress.setText("NOT AVAILABLE");
+            inputAddress.setHint("NOT AVAILABLE");
         else
             inputAddress.setText((CommonMethod.checkNull(model.getAddressLine1())) +
                     "\n" + (CommonMethod.checkNull(model.getAddressLine2())) +
@@ -170,7 +199,6 @@ public class AddSalesPersonActivity extends AppCompatActivity implements View.On
                         setUpdateButtonWithContent();
                         break;
                     case UPDATE:
-
                         presenter.onUpdatePersonClicked(view, model.getPkid());
                         break;
                 }
@@ -206,8 +234,7 @@ public class AddSalesPersonActivity extends AppCompatActivity implements View.On
     @Override
     public void onSuccess(String status) {
         showSnackbar(false, CommonMethod.FROM_ERROR, status, FROM_SAVE);
-        finish();
-        onBackPressed();
+
     }
 
     @Override
@@ -335,7 +362,7 @@ public class AddSalesPersonActivity extends AppCompatActivity implements View.On
             setResult(RESULT_OK);
             hideSnackbar();
             finish();
-            onBackPressed();
+           // onBackPressed();
         }
     }
 
@@ -361,8 +388,6 @@ public class AddSalesPersonActivity extends AppCompatActivity implements View.On
         EDIT
     }
 
-    public interface OnSnackbarClicked {
-        void onSnackbarItemClicked();
-    }
+
 
 }

@@ -29,6 +29,7 @@ import itg8.com.adminserviceapp.common.NoConnectivityException;
 import itg8.com.adminserviceapp.enquiry.model.StatusModel;
 import itg8.com.adminserviceapp.sales.model.SalesPersonModel;
 import itg8.com.adminserviceapp.ticket.adapter.CustomSpinnerAdapter;
+import itg8.com.adminserviceapp.ticket.model.TempStatusModel;
 import itg8.com.adminserviceapp.ticket.model.TicketModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +42,8 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
 
     private static final int DEFAULT_VALUE = 2515415;
     private static final String NOT_AVAILABLE = "Not Available";
+    private static final int FROM_SAVE = 0;
+    private static final int FROM_FAILED = 1;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.lbl_title)
@@ -70,6 +73,40 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.lbl_invoiceNumber)
+    TextView lblInvoiceNumber;
+    @BindView(R.id.lbl_invoiceNumber_value)
+    TextView lblInvoiceNumberValue;
+    @BindView(R.id.rl_product)
+    RelativeLayout rlProduct;
+    @BindView(R.id.rl_cust)
+    RelativeLayout rlCust;
+    @BindView(R.id.lbl_Engg)
+    TextView lblEngg;
+    @BindView(R.id.eng_pending_spinner)
+    Spinner engPendingSpinner;
+    @BindView(R.id.btn_pending_sync)
+    Button btnPendingSync;
+    @BindView(R.id.progressView_pending)
+    ProgressBar progressViewPending;
+
+    @BindView(R.id.lbl_engg_name_Assign_value)
+    TextView lblEnggNameAssignValue;
+
+    @BindView(R.id.btn_assign_close)
+    Button btnAssignClose;
+    @BindView(R.id.progressView_assign)
+    ProgressBar progressViewAssign;
+    @BindView(R.id.lbl_engg_name_value)
+    TextView lblEnggNameValue;
+    @BindView(R.id.lbl_engg_name)
+    TextView lblEnggName;
+    @BindView(R.id.lbl_engg_mobile_value)
+    TextView lblEnggMobileValue;
+    @BindView(R.id.lbl_engg_mobile)
+    TextView lblEnggMobile;
+    @BindView(R.id.rl_engg)
+    RelativeLayout rlEngg;
 
 
     private Snackbar snackbar;
@@ -86,6 +123,9 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
     private TextView enggMobileNumberAssign;
     private TextView enggNameClose;
     private TextView engMobileClose;
+    private int selectedPosition = -1;
+    private CustomSpinnerAdapter adapter;
+    private TempStatusModel tempStatusModel;
 
 
     @Override
@@ -93,7 +133,6 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket_details);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
@@ -111,6 +150,8 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
 
     private void checkFromwichFragment(TicketModel model, int from) {
         setAllBasicDetails(model);
+        tempStatusModel = new TempStatusModel();
+        String title = null;
         rl_pending = (RelativeLayout) findViewById(R.id.include_pending);
         rl_assign = (RelativeLayout) findViewById(R.id.include_assign);
         rl_close = (RelativeLayout) findViewById(R.id.include_close);
@@ -118,19 +159,25 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
 
         if (from == CommonMethod.TICKET_STATUS_OPEN) {
             setPendingEnggDetails(model);
+            title = "Pending Ticket";
+
         }
         if (from == CommonMethod.TICKET_STATUS_ASSIGN) {
             setEnggAssignDetails(model);
+            title = "Accept Ticket";
+
         }
         if (from == CommonMethod.TICKET_STATUS_CLOSE) {
             setCloseTicketDetails(model);
+            title = "Close Ticket";
         }
+        getSupportActionBar().setTitle(title);
     }
 
     private void setCloseTicketDetails(TicketModel model) {
         showItem(rl_close);
         hideItem(rl_pending, rl_assign);
-        findViewByIds(rl_pending,rl_close,rl_assign);
+        findViewByIds(rl_pending, rl_close, rl_assign);
         enggNameClose.setText(checkEmpty(model.getAssignedpersonname()));
         engMobileClose.setText(checkEmpty(model.getAssignedContactno()));
     }
@@ -138,7 +185,7 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
     private void setEnggAssignDetails(final TicketModel model) {
         showItem(rl_assign);
         hideItem(rl_close, rl_pending);
-        findViewByIds(rl_pending,rl_close,rl_assign);
+        findViewByIds(rl_pending, rl_close, rl_assign);
         Logs.d("ASSIGN MODEL:" + new Gson().toJson(model));
         enggNameAssign.setText(checkEmpty(model.getAssignedpersonname()));
         enggMobileNumberAssign.setText(checkEmpty(model.getAssignedContactno()));
@@ -149,15 +196,15 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
     private void setPendingEnggDetails(final TicketModel model) {
         showItem(rl_pending);
         hideItem(rl_assign, rl_close);
-        findViewByIds(rl_pending,rl_close,rl_assign);
-        onDownloadedSalesPersonList(getString(R.string.url_sales_person), 0, 100, model,CommonMethod.FROM_PENDING);
+        findViewByIds(rl_pending, rl_close, rl_assign);
+        onDownloadedSalesPersonList(getString(R.string.url_sales_person), 0, 100, model, CommonMethod.FROM_PENDING);
     }
 
     private void findViewByIds(RelativeLayout rl_pending, RelativeLayout rl_close, RelativeLayout rl_assign) {
-        engSpinner=rl_pending.findViewById(R.id.eng_pending_spinner);
-        btnSyncPending=rl_pending.findViewById(R.id.btn_pending_sync);
-        engSpinner=rl_pending.findViewById(R.id.eng_pending_spinner);
-        progressView_Pending=rl_pending.findViewById(R.id.progressView_pending);
+        engSpinner = rl_pending.findViewById(R.id.eng_pending_spinner);
+        btnSyncPending = rl_pending.findViewById(R.id.btn_pending_sync);
+        engSpinner = rl_pending.findViewById(R.id.eng_pending_spinner);
+        progressView_Pending = rl_pending.findViewById(R.id.progressView_pending);
         btnCloseAssign = rl_assign.findViewById(R.id.btn_assign_close);
         enggMobileNumberAssign = rl_assign.findViewById(R.id.lbl_engg_mobile_value);
         enggNameAssign = rl_assign.findViewById(R.id.lbl_engg_name_Assign_value);
@@ -181,18 +228,19 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
     }
 
     private void setAllBasicDetails(TicketModel model) {
-        String title = checkNull(model.getProduct()) ? checkEmpty(model.getProduct().get(0).getItemName()) : NOT_AVAILABLE;
-        String problem = checkNull(model.getProblem()) ? checkEmpty(model.getProblem().get(0).getProblem()) : NOT_AVAILABLE;
-        String customerName = checkNull(model.getCust()) ? checkEmpty(model.getCust().get(0).getCustomerName()) : NOT_AVAILABLE;
-        String customerEmail = checkNull(model.getCust()) ? checkEmpty(model.getCust().get(0).getEmail()) : NOT_AVAILABLE;
-        String customerMobile = checkNull(model.getCust()) ? checkEmpty(model.getCust().get(0).getMobileno()) : NOT_AVAILABLE;
-        String customerAddress = checkNull(model.getCust()) ? checkEmpty(model.getCust().get(0).getAddressLine1()) : NOT_AVAILABLE;
+        String title = checkNull(model.getProduct()) ? checkEmpty(model.getProduct().get(0).getItemName()) : "Product Name:" + " " + NOT_AVAILABLE;
+        String problem = checkNull(model.getProblem()) ? checkEmpty(model.getProblem().get(0).getProblem()) : "Problem:" + " " + NOT_AVAILABLE;
+        String customerName = checkNull(model.getCust()) ? checkEmpty(model.getCust().get(0).getCustomerName()) : "Customer Name:" + " " + NOT_AVAILABLE;
+        String customerEmail = checkNull(model.getCust()) ? checkEmpty(model.getCust().get(0).getEmail()) : "Email:" + " " + NOT_AVAILABLE;
+        String customerMobile = checkNull(model.getCust()) ? checkEmpty(model.getCust().get(0).getMobileno()) : "Mobile:" + " " + NOT_AVAILABLE;
+        String customerAddress = checkNull(model.getCust()) ? checkEmpty(model.getCust().get(0).getAddressLine1()) : "Address:" + " " + NOT_AVAILABLE;
         lblTitle.setText(title);
         lblDescription.setText(problem);
         lblCusNameValue.setText(customerName);
         lblCustEmailValue.setText(customerEmail);
         lblCustAddressValue.setText(customerMobile);
         lblCustAddressValue.setText(customerAddress);
+        lblInvoiceNumberValue.setText(String.valueOf(model.getInvoiceFkid()));
     }
 
 
@@ -209,7 +257,7 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_pending_sync:
-                assignEnggPersonToServer(model);
+                checkSpiinerItemSelecte();
                 break;
             case R.id.lbl_engg_name_Assign_value:
                 changeTicketStatus(model);
@@ -221,48 +269,60 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    private void checkSpiinerItemSelecte() {
+        if (selectedPosition <= 0) {
+            showSnackbar(false, CommonMethod.FROM_ERROR, "Select Engineer First", FROM_FAILED);
+        } else {
+            setAssignPerson(selectedPosition);
+            assignEnggPersonToServer(model, CommonMethod.FROM_PENDING);
+
+        }
+    }
+
     private void changeTicketStatus(TicketModel model) {
         showItem(rl_pending);
         hideItem(rl_close, rl_assign);
         model.setStatus(CommonMethod.TICKET_STATUS_ASSIGN);
-        onDownloadedSalesPersonList(getString(R.string.url_sales_person), 0, 100, model,CommonMethod.FROM_ASSIGN);
+//        tempStatusModel.setStatus(CommonMethod.TICKET_STATUS_ASSIGN);
+        onDownloadedSalesPersonList(getString(R.string.url_sales_person), 0, 100, model, CommonMethod.FROM_ASSIGN);
     }
 
     private void setChangeVisibility(TicketModel model) {
         model.setStatus(CommonMethod.TICKET_STATUS_CLOSE);
-        assignEnggPersonToServer(model);
+        assignEnggPersonToServer(model, CommonMethod.FROM_ASSIGN);
 
     }
 
-    private void assignEnggPersonToServer(TicketModel model) {
+    private void assignEnggPersonToServer(TicketModel model, final int from) {
         Call<StatusModel> call = AppApplication.getInstance().getRetroController().updateTicket(getString(R.string.url_update_ticket), model);
-        showItem(progressView_Assign);
+        checkShowFrom(from);
         call.enqueue(new Callback<StatusModel>() {
             @Override
             public void onResponse(Call<StatusModel> call, Response<StatusModel> response) {
                 if (response.isSuccessful()) {
                     if (response.body().isFlag()) {
-                        hideItem(progressView_Assign);
-                        showSnackbar(false, CommonMethod.FROM_ERROR, response.body().getStatus());
+                        checkHideFrom(from);
+                        showSnackbar(false, CommonMethod.FROM_ERROR, response.body().getStatus(),FROM_SAVE);
                     } else {
-                        hideItem(progressView_Assign);
-                        showSnackbar(false, CommonMethod.FROM_ERROR, response.body().getStatus());
+                        checkHideFrom(from);
+                        showSnackbar(false, CommonMethod.FROM_ERROR, response.body().getStatus(),FROM_FAILED);
                     }
                 } else {
-                    hideItem(progressView_Assign);
-                    showSnackbar(false, CommonMethod.FROM_ERROR, response.body().getStatus());
+                    checkHideFrom(from);
+                    showSnackbar(false, CommonMethod.FROM_ERROR, response.body().getStatus(),FROM_FAILED);
                 }
             }
 
             @Override
             public void onFailure(Call<StatusModel> call, Throwable t) {
                 t.printStackTrace();
-                hideItem(progressView_Assign);
+                checkHideFrom(from);
+
 
                 if (t instanceof NoConnectivityException) {
-                    showSnackbar(true, CommonMethod.FROM_ERROR, getString(R.string.no_internet));
+                    showSnackbar(true, CommonMethod.FROM_ERROR, getString(R.string.no_internet),FROM_FAILED);
                 } else {
-                    showSnackbar(false, CommonMethod.FROM_ERROR, t.getMessage());
+                    showSnackbar(false, CommonMethod.FROM_ERROR, t.getMessage(),FROM_FAILED);
                 }
 
             }
@@ -282,16 +342,12 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
                         setDataToAdapter(response.body(), model);
                     } else {
                         checkHideFrom(from);
-
-
-                        showSnackbar(false, CommonMethod.FROM_ERROR, "Download Failed");
+                        showSnackbar(false, CommonMethod.FROM_ERROR, "Download Failed", FROM_SAVE);
 
                     }
                 } else {
                     checkHideFrom(from);
-
-
-                    showSnackbar(false, CommonMethod.FROM_ERROR, "Download Failed");
+                    showSnackbar(false, CommonMethod.FROM_ERROR, "Download Failed", FROM_FAILED);
                 }
             }
 
@@ -301,9 +357,9 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
                 t.printStackTrace();
                 checkHideFrom(from);
                 if (t instanceof NoConnectivityException) {
-                    showSnackbar(true, CommonMethod.FROM_ERROR, getString(R.string.no_internet));
+                    showSnackbar(true, CommonMethod.FROM_ERROR, getString(R.string.no_internet), FROM_FAILED);
                 } else {
-                    showSnackbar(false, CommonMethod.FROM_ERROR, t.getMessage());
+                    showSnackbar(false, CommonMethod.FROM_ERROR, t.getMessage(), FROM_FAILED);
                 }
 
             }
@@ -312,28 +368,26 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
     }
 
     private void checkHideFrom(int from) {
-        if(from == CommonMethod.FROM_PENDING)
+        if (from == CommonMethod.FROM_PENDING)
             hideItem(progressView_Pending);
         else
             hideItem(progressView_Assign);
     }
 
     private void checkShowFrom(int from) {
-        if(from==CommonMethod.FROM_PENDING) {
+        if (from == CommonMethod.FROM_PENDING) {
             showItem(progressView_Pending);
-        }else
-        {
+        } else {
             showItem(progressView_Assign);
         }
     }
 
-    private void hideItem(View  hide) {
+    private void hideItem(View hide) {
         hide.setVisibility(View.GONE);
 
     }
 
-    private void showSnackbar(boolean isConnected, int from, String message) {
-
+    private void showSnackbar(boolean isConnected, int from, String message, final int fromSave) {
         int color = 0;
         if (from == CommonMethod.FROM_INTERNET) {
             if (isConnected) {
@@ -358,15 +412,21 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
         snackbar.setAction("OK", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSnackbarOkClicked(view);
+                onSnackbarOkClicked(view,fromSave);
 
             }
         });
         snackbar.show();
     }
 
-    private void onSnackbarOkClicked(View view) {
+    private void onSnackbarOkClicked(View view, int fromSave) {
+         if (fromSave==FROM_SAVE)
+         {
+             setResult(RESULT_OK);
+         }
         hideSnackbar();
+         finish();
+         onBackPressed();
     }
 
     public void hideSnackbar() {
@@ -382,19 +442,13 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
         SalesPersonModel models = new SalesPersonModel();
         models.setCustomerName("Select Engineer Name");
         body.add(0, models);
-        final CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(getApplicationContext(), body);
+        adapter = new CustomSpinnerAdapter(getApplicationContext(), body);
         engSpinner.setAdapter(adapter);
 
         engSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                int id = +position;
-                SalesPersonModel models = adapter.getItem(position);
-                String name = models.getCustomerName();
-                model.setAssignedpersonname(name);
-                model.setStatus(CommonMethod.TICKET_STATUS_CLOSE);
-                Logs.d("Id" + id);
-                Logs.d("Name" + name);
+                selectedPosition = position;
 
 
             }
@@ -404,6 +458,17 @@ public class TicketDetailsActivity extends AppCompatActivity implements View.OnC
 
             }
         });
+
+    }
+
+    private void setAssignPerson(int position) {
+        SalesPersonModel models = adapter.getItem(position);
+        String name = models.getCustomerName();
+        model.setAssignedpersonname(name);
+//        tempStatusModel.setAssignedpersonname(name);
+        //  model.setStatus(CommonMethod.TICKET_STATUS_CLOSE);
+        //Change Now
+
 
     }
 

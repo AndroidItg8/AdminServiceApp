@@ -80,10 +80,11 @@ public class TicketPresenterImp extends BaseWeakPresenter<TicketMVP.TicketView> 
     @Override
     public void onDownloadedCloseTicketList(List<TicketModel> list, int page, int status) {
         if (hasView()) {
+            getView().onProgressHide(status);
+
             if (page != 0)
                 getView().onShowPaginationLoading(false, status);
 
-            getView().onProgressHide(status);
 
             if (list.size() > 0)
                 getView().getTicketList(list, status);

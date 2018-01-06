@@ -69,7 +69,8 @@ public class LoginActivity extends AppCompatActivity implements LoginMvp.LoginVi
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         // getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setTitle("Profile");
+
+        toolbar.setTitle("Login");
 
         init();
 
@@ -85,17 +86,7 @@ public class LoginActivity extends AppCompatActivity implements LoginMvp.LoginVi
         edtPassword.setText("123456");
         presenter = new LoginPresenterImp(this);
         btnSave.setOnClickListener(this);
-
-
-
-
-
     }
-
-
-
-
-
     private void showSnackbar(boolean isConnected,int from, String message) {
 
         int color;

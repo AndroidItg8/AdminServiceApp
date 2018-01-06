@@ -27,6 +27,7 @@ public class PendingTenderAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static final int LOADING_VIEW = 1;
     private static final int NORMAL_VIEW = 0;
     ItemClickedListener listener;
+
     private Context context;
     private List<PendingTenderModel> list;
 
@@ -50,15 +51,15 @@ public class PendingTenderAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
 
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof PendingViewHolder) {
             ((PendingViewHolder) holder).model = list.get(position);
             ((PendingViewHolder) holder).lblTitle.setText(CommonMethod.checkEmpty(((PendingViewHolder) holder).model.getTitle()));
             ((PendingViewHolder) holder).lblDescription.setText(CommonMethod.checkEmpty(((PendingViewHolder) holder).model.getDescription()));
-            ((PendingViewHolder) holder).lblEndDateValue.setText(CommonMethod.checkEmpty(((PendingViewHolder) holder).model.getClosedDate()));
-            ((PendingViewHolder) holder).lblOpenDateValue.setText(CommonMethod.checkEmpty(((PendingViewHolder) holder).model.getOpenDate()));
+            ((PendingViewHolder) holder).lblEndDateValue.setText(CommonMethod.checkEmpty(((PendingViewHolder) holder).model.getTenderFeeIn()));
+            ((PendingViewHolder) holder).lblOpenDateValue.setText(CommonMethod.checkEmpty(((PendingViewHolder) holder).model.getClosedDate()));
+            ((PendingViewHolder) holder).lblPrice.setText(CommonMethod.checkEmpty(((PendingViewHolder) holder).model.getEMDAMT()));
         }
 
     }
@@ -68,6 +69,7 @@ public class PendingTenderAdapter extends RecyclerView.Adapter<RecyclerView.View
     public int getItemCount() {
         return list.size();
     }
+
     @Override
     public int getItemViewType(int position) {
         return list.get(position) == null ? LOADING_VIEW : NORMAL_VIEW;
@@ -85,13 +87,13 @@ public class PendingTenderAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public void removeFooter() {
-        Logs.d("RemoveFooterB4:"+list.size());
+        Logs.d("RemoveFooterB4:" + list.size());
 
         final int itemRemoved = list.size() - 1;
         list.remove(itemRemoved);
         notifyItemRemoved(itemRemoved);
         notifyItemRangeChanged(itemRemoved, list.size());
-        Logs.d("RemoveFooterAfter:"+list.size());
+        Logs.d("RemoveFooterAfter:" + list.size());
     }
 
     public interface ItemClickedListener {
@@ -107,10 +109,16 @@ public class PendingTenderAdapter extends RecyclerView.Adapter<RecyclerView.View
         View view;
         @BindView(R.id.lbl_open_date_value)
         TextView lblOpenDateValue;
+        @BindView(R.id.lbl_open_date)
+        TextView lblOpenDate;
         @BindView(R.id.lbl_price)
         TextView lblPrice;
+        @BindView(R.id.lbl_price_symbol)
+        TextView lblPriceSymbol;
         @BindView(R.id.lbl_end_date_value)
         TextView lblEndDateValue;
+        @BindView(R.id.lbl_end_date)
+        TextView lblEndDate;
 
         PendingTenderModel model;
 

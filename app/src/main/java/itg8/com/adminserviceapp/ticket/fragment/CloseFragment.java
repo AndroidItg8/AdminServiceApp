@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,8 +27,11 @@ import itg8.com.adminserviceapp.common.CommonMethod;
 import itg8.com.adminserviceapp.common.Logs;
 import itg8.com.adminserviceapp.ticket.TicketActivity;
 import itg8.com.adminserviceapp.ticket.TicketDetailsActivity;
+import itg8.com.adminserviceapp.ticket.adapter.TicketAcceptStatusAdapter;
 import itg8.com.adminserviceapp.ticket.adapter.TicketStatusCloseAdapter;
 import itg8.com.adminserviceapp.ticket.model.TicketModel;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +44,7 @@ public class CloseFragment extends BaseFragment implements TicketActivity.Ticket
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String SAVED_LAYOUT_MANAGER = "SAVED_LAYOUT_MANAGER";
+    private static final int RC_CODE = 234;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     Unbinder unbinder;
@@ -65,6 +70,49 @@ public class CloseFragment extends BaseFragment implements TicketActivity.Ticket
     private LinearLayoutManager layoutManager;
     private int positionIndex;
     private int topView;
+
+
+    public void resetGlobalVariable() {
+        page=0;
+        noList=false;
+        isProgressShow=-1;
+        isLoading=false;
+        isFinished=false;
+
+    }
+
+    @Override
+    public void onRefreshCloseFragment() {
+        resetEveryThing();
+    }
+
+    private void resetEveryThing()
+    {
+        resetGlobalVariable();
+        ((TicketActivity) this.context).CloseFragmentAttach(this);
+
+        resetAdapter();
+        resetOnCreateView();
+    }
+
+    private void resetOnCreateView() {
+        isViewVisible=true;
+        if(isProgressShow>0)
+        {
+            onProgressShow();
+        }else
+        {
+            onProgressHide();
+        }
+        init();
+    }
+
+    private void resetAdapter()
+    {
+        adapter = new TicketStatusCloseAdapter(getActivity(), this);
+
+    }
+
 
 
     public CloseFragment() {
@@ -109,7 +157,6 @@ public class CloseFragment extends BaseFragment implements TicketActivity.Ticket
     @Override
     public int getPage() {
         Logs.d("OnRejectedTenderList: Page" + page);
-
         return page;
     }
 
@@ -124,23 +171,21 @@ public class CloseFragment extends BaseFragment implements TicketActivity.Ticket
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            layoutManagerState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
+        }
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_reject, container, false);
         unbinder = ButterKnife.bind(this, view);
-        if (savedInstanceState != null) {
-            layoutManagerState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
-        }
-        isViewVisible=true;
-        if(isProgressShow>0)
-        {
-            onProgressShow();
-        }else
-        {
-            onProgressHide();
-        }
-        init();
+
+        resetOnCreateView();
         return view;
     }
 
@@ -164,7 +209,8 @@ public class CloseFragment extends BaseFragment implements TicketActivity.Ticket
 
     @Override
     public void onCloseTicketList(List<TicketModel> list) {
-        checkList(list);
+        adapter.addItems(list);
+        isProgressShow=0;
     }
 
     @Override
@@ -175,15 +221,6 @@ public class CloseFragment extends BaseFragment implements TicketActivity.Ticket
         noList = false;
         ((TicketActivity) this.context).onDetach();
     }
-
-    private void checkList(List<TicketModel> list) {
-        if (list.size() > 0) {
-            adapter.addItems(list);
-        } else {
-            CommonMethod.showHideItem(rlNoItem, recyclerView);
-        }
-    }
-
 
     @Override
     public void onPaginationError(boolean show) {
@@ -218,8 +255,8 @@ public class CloseFragment extends BaseFragment implements TicketActivity.Ticket
 
     @Override
     public void onNoMoreList(String message) {
-        isFinished = true;
-        adapter.removeFooter();
+//        isFinished = true;
+//        adapter.removeFooter();
     }
 
     private void checkNoList() {
@@ -289,4 +326,6 @@ public class CloseFragment extends BaseFragment implements TicketActivity.Ticket
             recyclerView.getLayoutManager().onRestoreInstanceState(layoutManagerState);
         }
     }
+
+
 }

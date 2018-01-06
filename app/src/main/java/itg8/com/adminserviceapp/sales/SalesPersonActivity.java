@@ -57,6 +57,7 @@ public class SalesPersonActivity extends AppCompatActivity implements View.OnCli
     private Snackbar snackbar;
     private SalesPersonAdapterAdapter adapter;
     private SalesPersonMVP.SalesPersonPresenter presenter;
+    private boolean isViewVisible=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,8 @@ public class SalesPersonActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_sales_person);
         ButterKnife.bind(this);
          presenter =new SalePersonPresenterImp(this);
-         callPresenter();
+        isViewVisible=true;
+        callPresenter();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         checkStoragePerm();
@@ -73,8 +75,8 @@ public class SalesPersonActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void callPresenter() {
+        if(isViewVisible)
         presenter.downloadSalesPersonList(getString(R.string.url_sales_person));
-
     }
 
     private void init(List<SalesPersonModel> list) {
@@ -99,7 +101,7 @@ public class SalesPersonActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         if (view == fab) {
             Intent intent = new Intent(getApplicationContext(),AddSalesPersonActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,RC_CODE);
 
         }
     }
@@ -302,8 +304,15 @@ public class SalesPersonActivity extends AppCompatActivity implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==RC_CODE && resultCode==RESULT_OK)
         {
-            callPresenter();
+            if(isViewVisible)
+                 callPresenter();
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isViewVisible=false;
     }
 }

@@ -159,7 +159,6 @@ public class TenderPresenterImp extends BaseWeakPresenter<TenderMVP.TenderView> 
             if(page !=0)
                 getView().onShowPaginationLoading(false, from);
 
-
             if(list.size()>0)
                 getView().onGetSubmitedTenderList(list);
             else {
@@ -175,10 +174,11 @@ public class TenderPresenterImp extends BaseWeakPresenter<TenderMVP.TenderView> 
     @Override
     public void onDownloadedRejectedTenderList(List<PendingTenderModel> list, int from, int page) {
         if(hasView()){
+            getView().onProgressHide(from);
             if(page !=0)
                 getView().onShowPaginationLoading(false, from);
 
-            getView().onProgressHide(from);
+
             if(list.size()>0)
                 getView().onGetRejectedTenderList(list);
             else {

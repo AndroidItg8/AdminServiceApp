@@ -204,12 +204,11 @@
             android:id="@+id/img_pdf"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/bg_pdf"
-            android:text="Open PDF"
-            android:layout_marginEnd="04dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/lbl_price"
             android:background="@android:color/transparent"
-            android:layout_centerVertical="true"
-           android:layout_alignParentEnd="true"/>
+            android:src="@drawable/bg_pdf"
+            android:text="Open PDF" />
 
     </RelativeLayout>
     </RelativeLayout>
@@ -260,6 +259,12 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
     <Button
         android:id="@+id/btn_sync"
         android:layout_width="wrap_content"
@@ -268,6 +273,7 @@
         android:layout_marginTop="05dp"
         android:background="@color/colorPrimary"
         android:text="sync"
+        android:layout_marginEnd="08dp"
         android:textColor="@color/colorWhite" />
 
             <ProgressBar
@@ -276,6 +282,20 @@
                 android:layout_gravity="center"
                 android:id="@+id/progressView"
                 android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="05dp"
+                android:layout_marginTop="05dp"
+                android:layout_marginEnd="08dp"
+                android:background="@color/colorPrimary"
+                android:text="Submit"
+                android:padding="08dp"
+                android:textColor="@color/colorWhite" />
+            </LinearLayout>
+
         </FrameLayout>
 
     </RelativeLayout>

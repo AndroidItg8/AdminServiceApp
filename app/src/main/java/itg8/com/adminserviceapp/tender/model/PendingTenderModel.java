@@ -39,7 +39,7 @@ public class PendingTenderModel implements Parcelable
     private String EMDAMT;
     @SerializedName("EMDStatus")
     @Expose
-    private String EMDStatus;
+    private boolean EMDStatus;
     @SerializedName("ENDRefundDate")
     @Expose
     private String ENDRefundDate;
@@ -76,44 +76,6 @@ public class PendingTenderModel implements Parcelable
     @SerializedName("Documents")
     @Expose
     private List<DocumentModel> Documents = new ArrayList<DocumentModel>();
-    public final static Parcelable.Creator<PendingTenderModel> CREATOR = new Creator<PendingTenderModel>() {
-
-
-        @SuppressWarnings({
-            "unchecked"
-        })
-        public PendingTenderModel createFromParcel(Parcel in) {
-            PendingTenderModel instance = new PendingTenderModel();
-            instance.pkid = ((int) in.readValue((int.class.getClassLoader())));
-            instance.Title = ((String) in.readValue((String.class.getClassLoader())));
-            instance.TenderID = ((String) in.readValue((String.class.getClassLoader())));
-            instance.Description = ((String) in.readValue((String.class.getClassLoader())));
-            instance.TenderValueIn = ((String) in.readValue((String.class.getClassLoader())));
-            instance.TenderFeeIn = ((String) in.readValue((String.class.getClassLoader())));
-            instance.EMDException = ((String) in.readValue((String.class.getClassLoader())));
-            instance.EMDAMT = ((String) in.readValue((String.class.getClassLoader())));
-            instance.EMDStatus = ((String) in.readValue((String.class.getClassLoader())));
-            instance.ENDRefundDate = ((String) in.readValue((String.class.getClassLoader())));
-            instance.OpenDate = ((String) in.readValue((String.class.getClassLoader())));
-            instance.ClosedDate = ((String) in.readValue((String.class.getClassLoader())));
-            instance.Location = ((String) in.readValue((String.class.getClassLoader())));
-            instance.TenderFile = ((String) in.readValue((String.class.getClassLoader())));
-            instance.AddedDate = ((Object) in.readValue((Object.class.getClassLoader())));
-            instance.SAdminstatu = ((Object) in.readValue((Object.class.getClassLoader())));
-            instance.TenderFillorNot = ((String) in.readValue((String.class.getClassLoader())));
-            instance.TenderStatus = ((String) in.readValue((String.class.getClassLoader())));
-            instance.mid = ((Object) in.readValue((Object.class.getClassLoader())));
-            instance.mdate = ((Object) in.readValue((Object.class.getClassLoader())));
-            in.readList(instance.Documents, (DocumentModel.class.getClassLoader()));
-            return instance;
-        }
-
-        public PendingTenderModel[] newArray(int size) {
-            return (new PendingTenderModel[size]);
-        }
-
-    }
-    ;
 
     /**
      * 
@@ -264,7 +226,7 @@ public class PendingTenderModel implements Parcelable
      * @return
      *     The EMDStatus
      */
-    public String getEMDStatus() {
+    public boolean getEMDStatus() {
         return EMDStatus;
     }
 
@@ -273,7 +235,7 @@ public class PendingTenderModel implements Parcelable
      * @param EMDStatus
      *     The EMDStatus
      */
-    public void setEMDStatus(String EMDStatus) {
+    public void setEMDStatus(boolean EMDStatus) {
         this.EMDStatus = EMDStatus;
     }
 
@@ -493,32 +455,72 @@ public class PendingTenderModel implements Parcelable
         this.Documents = Documents;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(pkid);
-        dest.writeValue(Title);
-        dest.writeValue(TenderID);
-        dest.writeValue(Description);
-        dest.writeValue(TenderValueIn);
-        dest.writeValue(TenderFeeIn);
-        dest.writeValue(EMDException);
-        dest.writeValue(EMDAMT);
-        dest.writeValue(EMDStatus);
-        dest.writeValue(ENDRefundDate);
-        dest.writeValue(OpenDate);
-        dest.writeValue(ClosedDate);
-        dest.writeValue(Location);
-        dest.writeValue(TenderFile);
-        dest.writeValue(AddedDate);
-        dest.writeValue(SAdminstatu);
-        dest.writeValue(TenderFillorNot);
-        dest.writeValue(TenderStatus);
-        dest.writeValue(mid);
-        dest.writeValue(mdate);
-        dest.writeList(Documents);
-    }
-
+    @Override
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.pkid);
+        dest.writeString(this.Title);
+        dest.writeString(this.TenderID);
+        dest.writeString(this.Description);
+        dest.writeString(this.TenderValueIn);
+        dest.writeString(this.TenderFeeIn);
+        dest.writeString(this.EMDException);
+        dest.writeString(this.EMDAMT);
+        dest.writeByte(this.EMDStatus ? (byte) 1 : (byte) 0);
+        dest.writeString(this.ENDRefundDate);
+        dest.writeString(this.OpenDate);
+        dest.writeString(this.ClosedDate);
+        dest.writeString(this.Location);
+        dest.writeString(this.TenderFile);
+        dest.writeParcelable((Parcelable) this.AddedDate, flags);
+        dest.writeParcelable((Parcelable) this.SAdminstatu, flags);
+        dest.writeString(this.TenderFillorNot);
+        dest.writeString(this.TenderStatus);
+        dest.writeParcelable((Parcelable) this.mid, flags);
+        dest.writeParcelable((Parcelable) this.mdate, flags);
+        dest.writeTypedList(this.Documents);
+    }
+
+    public PendingTenderModel() {
+    }
+
+    protected PendingTenderModel(Parcel in) {
+        this.pkid = in.readInt();
+        this.Title = in.readString();
+        this.TenderID = in.readString();
+        this.Description = in.readString();
+        this.TenderValueIn = in.readString();
+        this.TenderFeeIn = in.readString();
+        this.EMDException = in.readString();
+        this.EMDAMT = in.readString();
+        this.EMDStatus = in.readByte() != 0;
+        this.ENDRefundDate = in.readString();
+        this.OpenDate = in.readString();
+        this.ClosedDate = in.readString();
+        this.Location = in.readString();
+        this.TenderFile = in.readString();
+        this.AddedDate = in.readParcelable(Object.class.getClassLoader());
+        this.SAdminstatu = in.readParcelable(Object.class.getClassLoader());
+        this.TenderFillorNot = in.readString();
+        this.TenderStatus = in.readString();
+        this.mid = in.readParcelable(Object.class.getClassLoader());
+        this.mdate = in.readParcelable(Object.class.getClassLoader());
+        this.Documents = in.createTypedArrayList(DocumentModel.CREATOR);
+    }
+
+    public static final Creator<PendingTenderModel> CREATOR = new Creator<PendingTenderModel>() {
+        @Override
+        public PendingTenderModel createFromParcel(Parcel source) {
+            return new PendingTenderModel(source);
+        }
+
+        @Override
+        public PendingTenderModel[] newArray(int size) {
+            return new PendingTenderModel[size];
+        }
+    };
 }

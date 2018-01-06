@@ -71,9 +71,11 @@ public class TicketStatusCloseAdapter extends RecyclerView.Adapter<RecyclerView.
             if (list.get(position).getProblem().size() > 0)
                 if (list.get(position).getProblem() != null)
                     rejectedViewHolder.lblProblem.setText(CommonMethod.checkEmpty(list.get(position).getProblem().get(0).getProblem()));
+            else
+                    rejectedViewHolder.lblProblem.setText("NOT AVAILABLE");
 
-            rejectedViewHolder.lblInvoiceNumber.setText(String.valueOf(list.get(position).getInvoiceFkid()));
-            rejectedViewHolder.lblEngName.setText(CommonMethod.checkEmpty(list.get(position).getAssignedpersonname()));
+            rejectedViewHolder.lblInvoiceNumberValue.setText(String.valueOf(list.get(position).getInvoiceFkid()));
+            rejectedViewHolder.lblEngNameValue.setText(CommonMethod.checkEmpty(list.get(position).getAssignedpersonname()));
             Calendar date = (CommonMethod.ConvertStringToDateWithoutMillies(list.get(position).getAssignDate()));
             String year = String.valueOf(date.get(Calendar.YEAR));
             String month = String.valueOf(date.get(Calendar.MONTH) + 1);
@@ -125,12 +127,16 @@ public class TicketStatusCloseAdapter extends RecyclerView.Adapter<RecyclerView.
         TextView lblYear;
         @BindView(R.id.lbl_invoiceNumber)
         TextView lblInvoiceNumber;
+        @BindView(R.id.lbl_invoiceNumber_value)
+        TextView lblInvoiceNumberValue;
         @BindView(R.id.lbl_problem)
         TextView lblProblem;
         @BindView(R.id.lbl_rejected)
         TextView lblRejected;
         @BindView(R.id.lbl_reason_rejected)
         TextView lblReasonRejected;
+        @BindView(R.id.lbl_engName_value)
+        TextView lblEngNameValue;
         @BindView(R.id.lbl_engName)
         TextView lblEngName;
 

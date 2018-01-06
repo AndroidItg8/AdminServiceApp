@@ -51,6 +51,7 @@ public class SalesPersonAddPresenterImp extends BaseWeakPresenter<SalesPersonAdd
         address = getView().getAddress();
         email = getView().getEmail();
 
+        getView().showAllUpdateValues(name,mobile,anotherMobile,address,email);
         boolean isValid = true;
         if (TextUtils.isEmpty(name)) {
             isValid = false;

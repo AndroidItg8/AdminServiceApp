@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,8 +31,11 @@ import itg8.com.adminserviceapp.common.Logs;
 import itg8.com.adminserviceapp.tender.TenderActivity;
 import itg8.com.adminserviceapp.tender.TenderDetailsRejectedActivity;
 import itg8.com.adminserviceapp.tender.adapter.RejectedTenderAdapter;
+import itg8.com.adminserviceapp.tender.adapter.SubmittedTenderAdapter;
 import itg8.com.adminserviceapp.tender.model.PendingTenderModel;
 import itg8.com.adminserviceapp.tender.model.TenderModel;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,6 +48,7 @@ public class RejectedTenderFragment extends BaseFragment implements RejectedTend
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String SAVED_LAYOUT_MANAGER = "SAVED_LAYOUT_MANAGER";
+    private static final int RC_CODE = 898;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
@@ -107,6 +112,71 @@ public class RejectedTenderFragment extends BaseFragment implements RejectedTend
 
     }
 
+    public void resetGlobalVariable() {
+        page=0;
+        noList=false;
+        isProgressShow=-1;
+        isLoading=false;
+        isFinished=false;
+        isViewVisible=false;
+
+    }
+
+    private void resetEveryThing()
+    {
+        resetGlobalVariable();
+        ((TenderActivity) this.context).rejectedFragmentAttachment(this);
+
+        resetAdapter();
+        resetOnCreateView();
+    }
+
+    private void resetOnCreateView() {
+        noList=false;
+        isViewVisible=true;
+        if(isProgressShow>0)
+        {
+            onProgressShow();
+        }else
+        {
+            onProgressHide();
+        }
+        init();
+    }
+
+    private void resetAdapter()
+    {
+        adapter = new RejectedTenderAdapter(getActivity(), this);
+    }
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//  //      outState.putParcelable(SAVED_LAYOUT_MANAGER, recyclerView.getLayoutManager().onSaveInstanceState());
+//        super.onSaveInstanceState(outState);
+//    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+           // layoutManagerState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
+        }
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_expired_tender, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        resetOnCreateView();
+
+
+
+        return view;
+    }
+
     @Override
     public void getItems(int page, int from) {
         this.page = page;
@@ -120,51 +190,20 @@ public class RejectedTenderFragment extends BaseFragment implements RejectedTend
         return page;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_expired_tender, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        if (savedInstanceState != null) {
-            layoutManagerState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
-        }
-        isViewVisible=true;
-        if(isProgressShow>0)
-        {
-            onProgressShow();
-        }else
-        {
-            onProgressHide();
-        }
-
-        init();
-
-        return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(SAVED_LAYOUT_MANAGER, recyclerView.getLayoutManager().onSaveInstanceState());
-
-
-    }
-
     private void init() {
         checkNoList();
 
-
-
-    }
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addOnScrollListener(getRecyclerViewScroll(layoutManager, CommonMethod.FROM_REJECT));
+        recyclerView.setAdapter(adapter);
+ }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
         isViewVisible=false;
-        noList=false;
-        ((TenderActivity)this.context).onDetach();
     }
 
     @Override
@@ -173,6 +212,8 @@ public class RejectedTenderFragment extends BaseFragment implements RejectedTend
         this.context = context;
         ((TenderActivity) this.context).rejectedFragmentAttachment(this);
     }
+
+
 
     @Override
     public boolean isLoading() {
@@ -188,13 +229,14 @@ public class RejectedTenderFragment extends BaseFragment implements RejectedTend
     public void onItemClicked(int position, PendingTenderModel model) {
         Intent intent = new Intent(getActivity(), TenderDetailsRejectedActivity.class);
         intent.putExtra(CommonMethod.TENDER, model);
-        startActivity(intent);
+        startActivityForResult(intent,RC_CODE);
     }
 
 
     @Override
     public void onExpiredTenderList(List<PendingTenderModel> list) {
-        checkList(list);
+        adapter.addItems(list);
+        isProgressShow=0;
     }
 
 
@@ -219,22 +261,19 @@ public class RejectedTenderFragment extends BaseFragment implements RejectedTend
     @Override
     public void onNoMoreList(String message) {
         // showSnackbar(message);
-        isFinished = true;
-        adapter.removeFooter();
+//        isFinished = true;
+//        adapter.removeFooter();
 
     }
 
-    private void checkNoList() {
+    private void   checkNoList() {
         if (noList) {
             CommonMethod.showHideItem(rlNoItem, recyclerView);
         }
         else
         {
             CommonMethod.showHideItem(recyclerView, rlNoItem);
-            layoutManager = new LinearLayoutManager(getActivity());
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.addOnScrollListener(getRecyclerViewScroll(layoutManager, CommonMethod.FROM_REJECT));
-            recyclerView.setAdapter(adapter);
+
 
         }
     }
@@ -256,11 +295,10 @@ public class RejectedTenderFragment extends BaseFragment implements RejectedTend
 
     public void noDataAvailableToSetInAdapterInPageOne() {
         noList = true;
-        if (rlNoItem != null)
+        isProgressShow=0;
+        if (isViewVisible)
             checkNoList();
     }
-
-
 
     @Override
     public void onProgressHide() {
@@ -273,8 +311,9 @@ public class RejectedTenderFragment extends BaseFragment implements RejectedTend
     @Override
     public void onDetach() {
         super.onDetach();
+        noList=false;
         ((TenderActivity)this.context).onDetach();
-        isViewVisible=false;
+
 
     }
 
@@ -286,31 +325,37 @@ public class RejectedTenderFragment extends BaseFragment implements RejectedTend
             isProgressShow=1;
     }
 
-    private void checkList(List<PendingTenderModel> list) {
-        adapter.addItems(list);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        restoreLayoutManagerPosition();
+//        if (positionIndex != -1) {
+//            layoutManager.scrollToPositionWithOffset(positionIndex, topView);
+//        }
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        positionIndex = layoutManager.findFirstVisibleItemPosition();
+//        View startView = recyclerView.getChildAt(0);
+//        topView = (startView == null) ? 0 : (startView.getTop() - recyclerView.getPaddingTop());
+//
+//    }
+//
+//    private void restoreLayoutManagerPosition() {
+//        if (layoutManagerState != null) {
+//            recyclerView.getLayoutManager().onRestoreInstanceState(layoutManagerState);
+//        }
+//    }
+
 
     @Override
-    public void onResume() {
-        super.onResume();
-        restoreLayoutManagerPosition();
-        if (positionIndex != -1) {
-            layoutManager.scrollToPositionWithOffset(positionIndex, topView);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        positionIndex = layoutManager.findFirstVisibleItemPosition();
-        View startView = recyclerView.getChildAt(0);
-        topView = (startView == null) ? 0 : (startView.getTop() - recyclerView.getPaddingTop());
-
-    }
-
-    private void restoreLayoutManagerPosition() {
-        if (layoutManagerState != null) {
-            recyclerView.getLayoutManager().onRestoreInstanceState(layoutManagerState);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==RC_CODE && resultCode==RESULT_OK)
+        {
+            resetEveryThing();
         }
     }
 }

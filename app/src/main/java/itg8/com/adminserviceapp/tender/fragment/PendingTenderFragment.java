@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,10 @@ import itg8.com.adminserviceapp.tender.TenderActivity;
 import itg8.com.adminserviceapp.tender.TenderDetailsActivity;
 import itg8.com.adminserviceapp.tender.adapter.PendingTenderAdapter;
 import itg8.com.adminserviceapp.tender.model.PendingTenderModel;
+import itg8.com.adminserviceapp.ticket.TicketActivity;
+import itg8.com.adminserviceapp.ticket.adapter.TicketStatusPendingAdapter;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +52,7 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = PendingTenderFragment.class.getSimpleName();
     private static final String SAVED_LAYOUT_MANAGER = "SAVED_LAYOUT_MANAGER";
+    private static final int RC_CODE = 456;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.img_no)
@@ -86,6 +92,45 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
     boolean isLoading = false;
     boolean isFinished = false;
 
+    public void resetGlobalVariable() {
+        page=0;
+        noList=false;
+        isProgressShow=-1;
+        isLoading=false;
+        isFinished=false;
+        isViewVisible=false;
+
+    }
+
+    private void resetEveryThing()
+    {
+        resetGlobalVariable();
+        ((TenderActivity) this.context).fragmentAttach(this);
+        resetAdapter();
+        resetOnCreateView();
+    }
+
+    private void resetOnCreateView() {
+        isViewVisible=true;
+        noList=false;
+        init();
+
+        if(isProgressShow>0)
+        {
+            onProgressShow();
+        }else
+        {
+            onProgressHide();
+        }
+    }
+
+    private void resetAdapter()
+    {
+        adapter = new PendingTenderAdapter(getActivity(), this, CommonMethod.FROM_PENDING);
+
+
+    }
+
 
     public PendingTenderFragment() {
         super();
@@ -122,6 +167,13 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
     }
 
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            layoutManagerState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
+        }
+        super.onActivityCreated(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,19 +181,8 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pending_tender, container, false);
         unbinder = ButterKnife.bind(this, view);
-        if (savedInstanceState != null) {
-            layoutManagerState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
-        }
-        isViewVisible=true;
-        if(isProgressShow>0)
-        {
-            onProgressShow();
-        }else
-        {
-            onProgressHide();
-        }
-        init();
-        checkNoList();
+
+        resetOnCreateView();
 
 
         return view;
@@ -149,15 +190,14 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
 
 
     private void init() {
+        checkNoList();
+
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         //presenter.scrollListener(layoutManager, CommonMethod.FROM_COMPLAINT)
         recyclerView.addOnScrollListener(getRecyclerViewScroll(layoutManager, CommonMethod.FROM_PENDING));
         recyclerView.setAdapter(adapter);
-
-        checkNoList();
-
-    }
+ }
 
     @Override
     public void getItems(int page, int from) {
@@ -168,15 +208,16 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
     @Override
     public int getPage() {
         Logs.d("OnRejectedTenderList: Page" + page);
-
         return page;
     }
 
     private void checkNoList() {
         if (noList)
             CommonMethod.showHideItem(rlNoItem, recyclerView);
-        else
+        else {
             CommonMethod.showHideItem(recyclerView, rlNoItem);
+
+        }
 
     }
 
@@ -185,7 +226,8 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
         super.onDestroyView();
         unbinder.unbind();
         isViewVisible=false;
-        ((TenderActivity)this.context).onDetach();
+        noList=false;
+        isProgressShow=-1;
     }
 
     @Override
@@ -193,8 +235,8 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
         Intent intent = new Intent(getActivity(), TenderDetailsActivity.class);
         intent.putExtra(CommonMethod.TENDER, model);
 //        intent.putParcelableArrayListExtra(CommonMethod.TENDER_DOCUMENT, (ArrayList<? extends Parcelable>) model.getDocuments());
-        intent.putExtra(CommonMethod.FROM, CommonMethod.FROM_PENDINGS);
-        startActivity(intent);
+        intent.putExtra( CommonMethod.FROM_PENDINGS,CommonMethod.FROM_PENDINGS);
+        startActivityForResult(intent,RC_CODE);
 
     }
 
@@ -208,8 +250,10 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
     @Override
     public void onDetach() {
         super.onDetach();
-        isViewVisible=false;
         ((TenderActivity)this.context).onDetach();
+        isViewVisible=false;
+        noList=false;
+        isProgressShow=-1;
 
     }
 
@@ -240,8 +284,8 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
 
     @Override
     public void onNoMoreList(String message) {
-        isFinished = true;
-        adapter.removeFooter();
+//        isFinished = true;
+//        adapter.removeFooter();
     }
 
     /**
@@ -251,7 +295,8 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
      */
     public void noDataAvailableToSetInAdapterInPageOne() {
         noList = true;
-        if (rlNoItem != null)
+        isProgressShow=0;
+        if (isViewVisible)
             checkNoList();
     }
 
@@ -318,9 +363,15 @@ public class PendingTenderFragment extends BaseFragment implements PendingTender
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==RC_CODE && resultCode==RESULT_OK)
+        {
+            resetEveryThing();
+            ((TenderActivity) this.context).refreshSubmitFragment(this);
+        }
 
-
-
-
+    }
 }

@@ -21,6 +21,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,11 +32,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +46,10 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import itg8.com.adminserviceapp.R;
+import itg8.com.adminserviceapp.common.AppApplication;
 import itg8.com.adminserviceapp.common.CommonMethod;
+import itg8.com.adminserviceapp.common.NoConnectivityException;
+import itg8.com.adminserviceapp.enquiry.model.StatusModel;
 import itg8.com.adminserviceapp.tender.adapter.TenderDocumentAdapter;
 import itg8.com.adminserviceapp.tender.model.CustomTenderDocumentModel;
 import itg8.com.adminserviceapp.tender.model.DocName;
@@ -53,6 +59,9 @@ import itg8.com.adminserviceapp.tender.mvp_document.TenderDocumentMVP;
 import itg8.com.adminserviceapp.tender.mvp_document.TenderDocumentPresenterImp;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TenderDetailsActivity extends AppCompatActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks, TenderDocumentAdapter.DocumentItemClickedListener, TenderDocumentMVP.TenderDocumentView {
     //, TenderDocumentAdapter.DocumentItemClickedListener
@@ -60,6 +69,8 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
     private static final int RC_STORAGE = 234;
     private static final String TAG = "TenderDetailsActivity";
     private static final String PDF_MIME_TYPE = "application/pdf";
+    private static final int FROM_SUCCESS = 0;
+    private static final int FROM_ERROR = 1;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.fab)
@@ -111,6 +122,10 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
     ArrayList<Long> list = new ArrayList<>();
     Intent intent = null;
     HashMap<Integer, CustomTenderDocumentModel> hashMap = new HashMap<>();
+    HashMap<DocumentModel, Boolean> hashMapChange = new HashMap<>();
+    PendingTenderModel tenderModel;
+    @BindView(R.id.btn_submit)
+    Button btnSubmit;
     private String[] permissions;
     private boolean canReadStorage;
     private boolean canWriteStorage;
@@ -118,10 +133,12 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
     private File tempFile;
     private NotificationManager mNotifyManager;
     private NotificationCompat.Builder mBuilder;
-    private String from;
+    private String from = null;
     private List<CustomTenderDocumentModel> documentList = new ArrayList<>();
     private Snackbar snackbar;
     private TenderDocumentMVP.TenderDocumentPresenter presenter;
+    private boolean isViewVisible = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +147,8 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        presenter = new TenderDocumentPresenterImp(this);
+        isViewVisible = false;
+
         init();
     }
 
@@ -138,30 +156,66 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
         checkStoragePerm();
         imgPdf.setOnClickListener(this);
         btnSync.setOnClickListener(this);
+        btnSubmit.setOnClickListener(this);
         checkIntent();
     }
 
     private void checkIntent() {
-        PendingTenderModel tenderModel;
+        String title = null;
 
         if (getIntent().hasExtra(CommonMethod.TENDER)) {
             tenderModel = getIntent().getParcelableExtra(CommonMethod.TENDER);
-            if (getIntent().getStringExtra(CommonMethod.FROM_SUBMITED) != null) {
-                from = getIntent().getStringExtra(CommonMethod.FROM_SUBMITED);
-            }
-        } else {
-            tenderModel = getIntent().getParcelableExtra(CommonMethod.TENDER);
-            from = getIntent().getStringExtra(CommonMethod.FROM_PENDINGS);
+
+
         }
+
+        if (getIntent().hasExtra(CommonMethod.FROM_SUBMITED)) {
+            from = getIntent().getStringExtra(CommonMethod.FROM_SUBMITED);
+            title = "Submitted Tender";
+            btnSubmit.setText("Rejected");
+            btnSync.setVisibility(View.GONE);
+
+
+        } else {
+            //tenderModel = getIntent().getParcelableExtra(CommonMethod.TENDER);
+            from = getIntent().getStringExtra(CommonMethod.FROM_PENDINGS);
+            title = "Pending Tender";
+//            btnSync.setText("Rejected");
+            btnSubmit.setText("Submit");
+            btnSync.setVisibility(View.VISIBLE);
+
+
+
+        }
+
+        getSupportActionBar().setTitle(title);
+
+
+        hideDocumentButton(tenderModel);
         setAllEditText(tenderModel);
         setCustomDocumentModel(tenderModel);
+        setChangeHashMap(tenderModel.getDocuments());
 
         setRecyclerView(tenderModel);
     }
 
+    private void setChangeHashMap(List<DocumentModel> documents) {
+        for (DocumentModel model :
+                documents) {
+            hashMapChange.put(model, false);
+
+        }
+    }
+
+    private void hideDocumentButton(PendingTenderModel tenderModel) {
+        if (TextUtils.isEmpty(tenderModel.getTenderFile())) {
+            imgPdf.setVisibility(View.GONE);
+        } else
+            imgPdf.setVisibility(View.VISIBLE);
+    }
+
     private void setCustomDocumentModel(PendingTenderModel tenderModel) {
         for (DocumentModel model : tenderModel.getDocuments()) {
-
             CustomTenderDocumentModel model1 = new CustomTenderDocumentModel();
             model1.setCover_fkid(model.getCover().get(0).getPkid());
             model1.setActualDoc_fkid(model.getDocName().get(0).getPkid());
@@ -169,7 +223,7 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
             model1.setEmployeeStatus(null);
             model1.setPkid(model.getPkid());
             model1.setTender_fkid(model.getTenderFkid());
-            if(model.getSuperAdminStatus()!= null)
+            if (model.getSuperAdminStatus() != null)
                 model1.setSuperAdminStatus(Integer.parseInt((model.getSuperAdminStatus())));
 
             hashMap.put(model.getPkid(), model1);
@@ -218,17 +272,120 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
             case R.id.btn_sync:
                 sendDocumentDetailsToServer();
                 break;
+            case R.id.btn_submit:
+                checkFrom();
+                break;
         }
     }
 
-    private void sendDocumentDetailsToServer() {
-        getDocumentFromHashMap();
-        if (documentList.size() > 0) {
-            presenter.sendTenderDocumentModelList(getString(R.string.url_upadte_tender_document), documentList);
+    private void checkFrom() {
+        if (from.equalsIgnoreCase(CommonMethod.FROM_PENDINGS)) {
+            tenderModel.setTenderStatus("1");
+            tenderModel.setTenderFillorNot("1");
         } else {
-            showSnackbar(getString(R.string.select_item), false);
+            btnSubmit.setText("Reject");
+            tenderModel.setTenderStatus("2");
+            tenderModel.setTenderFillorNot("0");
+        }
+        sendFundValueToServer();
+
+    }
+
+    private void sendFundValueToServer() {
+
+        CommonMethod.showHideItem(progressView,btnSubmit);
+
+        Call<StatusModel> call = AppApplication.getInstance().getRetroController().updateTender(getString(R.string.url_update_tender), tenderModel);
+        call.enqueue(new Callback<StatusModel>() {
+            @Override
+            public void onResponse(Call<StatusModel> call, Response<StatusModel> response) {
+                if (response.isSuccessful()) {
+                    CommonMethod.showHideItem(btnSubmit, progressView);
+
+                    if (response.body().isFlag()) {
+                        showSnackbar(false, FROM_SUCCESS, response.body().getStatus());
+                    } else {
+                        showSnackbar(false, CommonMethod.FROM_ERROR, response.body().getStatus());
+                    }
+                } else {
+                    CommonMethod.showHideItem(btnSubmit, progressView);
+                    showSnackbar(false, CommonMethod.FROM_ERROR, response.body().getStatus());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StatusModel> call, Throwable t) {
+                t.printStackTrace();
+                CommonMethod.showHideItem(btnSubmit, progressView);
+                if (t instanceof NoConnectivityException) {
+                    showSnackbar(true, CommonMethod.FROM_ERROR, getString(R.string.no_internet));
+                } else {
+                    showSnackbar(false, CommonMethod.FROM_ERROR, t.getMessage());
+                }
+
+            }
+        });
+
+
+    }
+
+    private void showSnackbar(boolean isConnected, final int from, String message) {
+        int color = 0;
+        if (from == CommonMethod.FROM_INTERNET) {
+            if (isConnected) {
+
+                color = Color.RED;
+            }
+        } else {
+            color = Color.WHITE;
 
         }
+
+        snackbar = Snackbar
+                .make(fab, message, Snackbar.LENGTH_INDEFINITE);
+
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(color);
+        textView.setMaxLines(2);
+        snackbar.show();
+
+
+        snackbar.setAction("OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSnackbarOkClicked(view, from);
+
+            }
+        });
+        snackbar.show();
+    }
+
+
+
+    private void sendDocumentDetailsToServer() {
+        getDocumentFromHashMap();
+
+        if (!checkChangesHappend()) {
+            Toast.makeText(this, "No changes done in documents.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (documentList.size() > 0) {
+            presenter = new TenderDocumentPresenterImp(this);
+            presenter.sendTenderDocumentModelList(getString(R.string.url_upadte_tender_document), documentList);
+        } else {
+            showSnackbar(getString(R.string.select_item), false, FROM_ERROR);
+
+        }
+    }
+
+    private boolean checkChangesHappend() {
+        for (Map.Entry<DocumentModel, Boolean> entry : hashMapChange.entrySet()) {
+            if (entry.getValue()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void getDocumentFromHashMap() {
@@ -240,29 +397,30 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
 
     private void downloadPDF() {
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri Download_Uri = Uri.parse("https://www3.nd.edu/~cpoellab/teaching/cse40816/android_tutorial.pdf");
+        Uri Download_Uri = Uri.parse(CommonMethod.BASE_URL + tenderModel.getTenderFile());
 
         DownloadManager.Request request = new DownloadManager.Request(Download_Uri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
         request.setAllowedOverRoaming(false);
-        request.setTitle("PDF Downloading " + "Sample" + ".pdf");
-        request.setDescription("Downloading " + "Sample" + ".pdf");
+        request.setTitle(tenderModel.getTitle());
+        request.setDescription("Downloading " + tenderModel.getTitle());
         request.setMimeType("application/pdf");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setVisibleInDownloadsUi(true);
         request.setVisibleInDownloadsUi(true);
-        tempFile = new File(getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "android_tutorial");
+        tempFile = new File(getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), CommonMethod.FOLDER_NAME);
         Log.e(TAG, "File Path:" + tempFile);
         if (tempFile.exists()) {
             // If we have downloaded the file before, just go ahead and show it.
             openPDF(getApplicationContext(), Uri.fromFile(tempFile));
-            return;
+        } else {
+            tempFile.mkdirs();
         }
-        request.setDestinationInExternalFilesDir(getApplicationContext(), Environment.DIRECTORY_DOWNLOADS, "/" + "android_tutorial" + ".pdf");
+        request.setDestinationInExternalFilesDir(getApplicationContext(), Environment.DIRECTORY_DOCUMENTS, "/" + CommonMethod.FOLDER_NAME);
+//        request.setDestinationInExternalFilesDir(getApplicationContext(), Environment.DIRECTORY_DOCUMENTS, "/" + "android_tutorial" + ".pdf");
         long refid = downloadManager.enqueue(request);
         list.add(refid);
         Log.d(TAG, "Download Manager:" + new Gson().toJson(list));
-
 
         downloadCompleted(refid);
 
@@ -365,14 +523,14 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/html");
         intent.putExtra(Intent.EXTRA_EMAIL, "");
-        intent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.subject)+ model.getTenderActualDocument());
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject) + model.getTenderActualDocument());
         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_body));
         startActivity(Intent.createChooser(intent, getString(R.string.title_sending_mail)));
     }
 
     @Override
-    public void onDocumentClickedItem(int position, DocName model) {
-        sendEmailForDocument(model);
+    public void onDocumentClickedItem(int position, DocumentModel model) {
+        sendEmailForDocument(model.getDocName().get(0));
     }
 
     @Override
@@ -383,44 +541,48 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
     private void setAllDocumentDetails(DocumentModel model, boolean b, List<DocumentModel> list) {
         model.setChecked(b);
         CustomTenderDocumentModel model1 = hashMap.get(model.getPkid());
+        model1.setCheck(b);
         if (b) {
             model1.setSuperAdminStatus(1);
         } else {
             model1.setSuperAdminStatus(0);
         }
+        hashMapChange.put(model, !hashMapChange.get(model));
+
         hashMap.put(model.getPkid(), model1);
     }
 
     @Override
     public void onProgressHide() {
-        progressView.setVisibility(View.GONE);
+        CommonMethod.showHideItem(btnSync, progressView);
+
 
     }
 
     @Override
     public void onProgressShow() {
-        progressView.setVisibility(View.VISIBLE);
+        CommonMethod.showHideItem(progressView, btnSync);
     }
 
     @Override
     public void onNoInternet(boolean b) {
-        showSnackbar(getString(R.string.no_internet), b);
+        showSnackbar(getString(R.string.no_internet), b, FROM_ERROR);
 
     }
 
     @Override
     public void onError(String mesg) {
-        showSnackbar(mesg, false);
+        showSnackbar(mesg, false, FROM_ERROR);
 
     }
 
     @Override
     public void onSuccess(String message) {
-        showSnackbar(message, false);
+        showSnackbar(message, false, FROM_SUCCESS);
 
     }
 
-    private void showSnackbar(String message, boolean b) {
+    private void showSnackbar(String message, boolean b, final int from) {
         int color = 0;
         if (b) {
             color = Color.RED;
@@ -439,14 +601,19 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
         snackbar.setAction("OK", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSnackbarOkClicked(view);
+                onSnackbarOkClicked(view, from);
 
             }
         });
         snackbar.show();
     }
 
-    private void onSnackbarOkClicked(View view) {
+    private void onSnackbarOkClicked(View view, int from) {
+        if (from == FROM_SUCCESS) {
+            setResult(RESULT_OK);
+            finish();
+            onBackPressed();
+        }
         hideSnackbar();
     }
 
@@ -454,5 +621,12 @@ public class TenderDetailsActivity extends AppCompatActivity implements View.OnC
         if (snackbar != null && snackbar.isShown()) {
             snackbar.dismiss();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
     }
 }

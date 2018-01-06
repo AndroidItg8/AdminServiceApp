@@ -1,6 +1,5 @@
 package itg8.com.adminserviceapp.gst;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,29 +8,24 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.ContextMenu;
+
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import itg8.com.adminserviceapp.R;
-import itg8.com.adminserviceapp.common.CommonMethod;
 import itg8.com.adminserviceapp.enquiry.model.EnquiryModel;
-import itg8.com.adminserviceapp.gst.mvp.GSTMVP;
-import itg8.com.adminserviceapp.sales.model.SalesPersonModel;
+
 import itg8.com.adminserviceapp.ticket.adapter.ViewPagerAdapter;
 
 public class GSTActivity extends AppCompatActivity implements View.OnClickListener {

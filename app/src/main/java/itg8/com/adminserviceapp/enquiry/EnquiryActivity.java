@@ -67,22 +67,17 @@ public class EnquiryActivity extends AppCompatActivity implements EasyPermission
         presneter = new EnquiryPresenterImp(this);
         checkStoragePerm();
         init();
-
-
     }
 
 
     private void init() {
         CommonMethod.showHideItem(recyclerView, rlNoItem);
         presneter.downloadEnquiryList(getString(R.string.url_enquiry));
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addOnScrollListener(presneter.recyclerViewScrllListener(linearLayoutManager));
         adapter = new PendingEnquiryAdapter(getApplicationContext(), this);
         recyclerView.setAdapter(adapter);
-
-
     }
 
     @Override
@@ -102,7 +97,6 @@ public class EnquiryActivity extends AppCompatActivity implements EasyPermission
         if ((EasyPermissions.hasPermissions(this, permissions[1]))) {
             canPhoneCall = true;
         }
-
         if (!canPhoneState || !canPhoneCall) {
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_no_permission), RC_CALL, permissions);
         }
@@ -141,7 +135,6 @@ public class EnquiryActivity extends AppCompatActivity implements EasyPermission
     }
 
     private void showSnackbar(boolean isConnected, int from, String message) {
-
         int color = 0;
         if (from == CommonMethod.FROM_INTERNET) {
             if (isConnected) {
@@ -209,7 +202,7 @@ public class EnquiryActivity extends AppCompatActivity implements EasyPermission
 
     @Override
     public void onNoMoreList(int from) {
-        adapter.removeFooter();
+       // adapter.removeFooter();
 
 
     }
@@ -248,7 +241,7 @@ public class EnquiryActivity extends AppCompatActivity implements EasyPermission
             showSnackbar(false, CommonMethod.FROM_ERROR, getString(R.string.rationale_no_permission));
         } else {
 
-            String telNo = "tel:" + model.getContact();
+            String telNo = "tel:" + model.getCust().get(0).getMobileno();
             Intent callIntent = new Intent(Intent.ACTION_CALL);
             callIntent.setData(Uri.parse(telNo));
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -264,6 +257,13 @@ public class EnquiryActivity extends AppCompatActivity implements EasyPermission
             startActivity(callIntent);
         }
 
+    }
+
+    @Override
+    public void onItemClickedListner(int position, EnquiryModel model) {
+        Intent intent = new Intent(getApplicationContext(),EnquiryDetailsActivity.class);
+        intent.putExtra(CommonMethod.ENQUIRY,model);
+        startActivity(intent);
     }
 
 

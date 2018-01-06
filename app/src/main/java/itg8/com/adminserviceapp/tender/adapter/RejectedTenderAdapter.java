@@ -1,6 +1,7 @@
 package itg8.com.adminserviceapp.tender.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import itg8.com.adminserviceapp.R;
 import itg8.com.adminserviceapp.common.CommonMethod;
 import itg8.com.adminserviceapp.sales.ProgressHolder;
 import itg8.com.adminserviceapp.tender.model.PendingTenderModel;
-import itg8.com.adminserviceapp.tender.model.TenderModel;
 
 /**
  * Created by Android itg 8 on 12/21/2017.
@@ -27,12 +27,12 @@ public class RejectedTenderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private static final int NORMAL_VIEW = 0;
     private static final int LOADING_VIEW = 1;
+
     private Context context;
     private List<PendingTenderModel> list;
     ItemClickedListener listener;
 
-    public RejectedTenderAdapter(Context context,  ItemClickedListener listener) {
-
+    public RejectedTenderAdapter(Context context, ItemClickedListener listener) {
         this.context = context;
         this.list = new ArrayList<>();
         this.listener = listener;
@@ -43,23 +43,37 @@ public class RejectedTenderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         RecyclerView.ViewHolder holder;
         if (viewType == NORMAL_VIEW) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rv_rejected_tender, parent, false);
-            holder = new RejectedTenderAdapter.RejectedViewHolder(view);
+            holder = new RejectedViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rv_progress, parent, false);
             holder = new ProgressHolder(view);
         }
-        return  holder;
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof RejectedTenderAdapter.RejectedViewHolder) {
-            ((RejectedTenderAdapter.RejectedViewHolder) holder).model = list.get(position);
-            ((RejectedTenderAdapter.RejectedViewHolder) holder).lblTitle.setText(CommonMethod.checkEmpty(((RejectedTenderAdapter.RejectedViewHolder) holder).model.getTitle()));
-            ((RejectedTenderAdapter.RejectedViewHolder) holder).lblDescription.setText(CommonMethod.checkEmpty(((RejectedTenderAdapter.RejectedViewHolder) holder).model.getDescription()));
-            ((RejectedTenderAdapter.RejectedViewHolder) holder).lblOpenDateValue.setText(CommonMethod.checkEmpty(((RejectedTenderAdapter.RejectedViewHolder) holder).model.getOpenDate()));
-            ((RejectedTenderAdapter.RejectedViewHolder) holder).lblStatusValue.setText(CommonMethod.checkEmpty(((RejectedTenderAdapter.RejectedViewHolder) holder).model.getOpenDate()));
-            ((RejectedViewHolder) holder).lblTenderFeeValue.setText(CommonMethod.checkEmpty(((RejectedTenderAdapter.RejectedViewHolder) holder).model.getOpenDate()));
+        if (holder instanceof RejectedViewHolder) {
+            ((RejectedViewHolder) holder).model = list.get(position);
+            ((RejectedViewHolder) holder).lblTitle.setText(CommonMethod.checkEmpty(((RejectedViewHolder) holder).model.getTitle()));
+            ((RejectedViewHolder) holder).lblDescription.setText(CommonMethod.checkEmpty(((RejectedViewHolder) holder).model.getDescription()));
+            ((RejectedViewHolder) holder).lblOpenDateValue.setText(CommonMethod.checkEmpty(((RejectedViewHolder) holder).model.getClosedDate()));
+            ((RejectedViewHolder) holder).lblStatusValue.setText(((RejectedViewHolder) holder).model.getEMDStatus() ? "YES" : "NO");
+            ((RejectedViewHolder) holder).lblTenderFeeValue.setText(CommonMethod.checkEmpty(((RejectedViewHolder) holder).model.getOpenDate()));
+            if (((RejectedViewHolder) holder).model.getEMDStatus()) {
+                ((RejectedViewHolder) holder).lblStatusValue.setTextColor(ContextCompat.getColor(context, R.color.colorGreen));
+
+                ((RejectedViewHolder) holder).lblRefundDate.setVisibility(View.VISIBLE);
+                ((RejectedViewHolder) holder).lblRefundDateValue.setVisibility(View.VISIBLE);
+                ((RejectedViewHolder) holder).lblRefundDateValue.setText(((RejectedViewHolder) holder).model.getENDRefundDate() != null ? ((RejectedViewHolder) holder).model.getENDRefundDate() : "NO AVAILABLE");
+
+            }else
+            {
+                ((RejectedViewHolder) holder).lblRefundDate.setVisibility(View.GONE);
+                ((RejectedViewHolder) holder).lblRefundDateValue.setVisibility(View.GONE);
+                ((RejectedViewHolder) holder).lblStatusValue.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
+
+            }
         }
     }
 
@@ -70,7 +84,7 @@ public class RejectedTenderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemViewType(int position) {
-        return list.get(position) == null  ? LOADING_VIEW : NORMAL_VIEW;
+        return list.get(position) == null ? LOADING_VIEW : NORMAL_VIEW;
     }
 
     public class RejectedViewHolder extends RecyclerView.ViewHolder {
@@ -84,15 +98,19 @@ public class RejectedTenderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView lblOpenDateValue;
         @BindView(R.id.lbl_open_date)
         TextView lblOpenDate;
-        @BindView(R.id.lbl_status_value)
-        TextView lblStatusValue;
-        @BindView(R.id.lbl_status)
-        TextView lblStatus;
         @BindView(R.id.lbl_tender_fee_value)
         TextView lblTenderFeeValue;
         @BindView(R.id.lbl_tender_fee)
         TextView lblTenderFee;
-        PendingTenderModel  model;
+        @BindView(R.id.lbl_status_value)
+        TextView lblStatusValue;
+        @BindView(R.id.lbl_status)
+        TextView lblStatus;
+        @BindView(R.id.lbl_Refund_date_value)
+        TextView lblRefundDateValue;
+        @BindView(R.id.lbl_Refund_date)
+        TextView lblRefundDate;
+        PendingTenderModel model;
 
         public RejectedViewHolder(View itemView) {
             super(itemView);

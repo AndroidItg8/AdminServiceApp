@@ -26,13 +26,13 @@ public class Cust implements Parcelable
     private String customerName;
     @SerializedName("AddressLine1")
     @Expose
-    private Object AddressLine1;
+    private String AddressLine1;
     @SerializedName("addressLine2")
     @Expose
-    private Object addressLine2;
+    private String addressLine2;
     @SerializedName("AddressLine3")
     @Expose
-    private Object AddressLine3;
+    private String AddressLine3;
     @SerializedName("PrintName")
     @Expose
     private Object PrintName;
@@ -56,7 +56,7 @@ public class Cust implements Parcelable
     private Object Telephoneno;
     @SerializedName("mobileno")
     @Expose
-    private Object mobileno;
+    private String mobileno;
     @SerializedName("email")
     @Expose
     private String email;
@@ -108,9 +108,9 @@ public class Cust implements Parcelable
             instance.UserFkid = ((String) in.readValue((String.class.getClassLoader())));
             instance.CompanyFkid = ((int) in.readValue((int.class.getClassLoader())));
             instance.customerName = ((String) in.readValue((String.class.getClassLoader())));
-            instance.AddressLine1 = ((Object) in.readValue((Object.class.getClassLoader())));
-            instance.addressLine2 = ((Object) in.readValue((Object.class.getClassLoader())));
-            instance.AddressLine3 = ((Object) in.readValue((Object.class.getClassLoader())));
+            instance.AddressLine1 = ((String) in.readValue((String.class.getClassLoader())));
+            instance.addressLine2 = ((String) in.readValue((String.class.getClassLoader())));
+            instance.AddressLine3 = ((String) in.readValue((String.class.getClassLoader())));
             instance.PrintName = ((Object) in.readValue((Object.class.getClassLoader())));
             instance.GroupFkid = ((Object) in.readValue((Object.class.getClassLoader())));
             instance.openBalance = ((Object) in.readValue((Object.class.getClassLoader())));
@@ -118,7 +118,7 @@ public class Cust implements Parcelable
             instance.State = ((Object) in.readValue((Object.class.getClassLoader())));
             instance.Fax = ((Object) in.readValue((Object.class.getClassLoader())));
             instance.Telephoneno = ((Object) in.readValue((Object.class.getClassLoader())));
-            instance.mobileno = ((Object) in.readValue((Object.class.getClassLoader())));
+            instance.mobileno = ((String) in.readValue((String.class.getClassLoader())));
             instance.email = ((String) in.readValue((String.class.getClassLoader())));
             instance.contactPersonName = ((Object) in.readValue((Object.class.getClassLoader())));
             instance.AdharNumber = ((Object) in.readValue((Object.class.getClassLoader())));
@@ -219,7 +219,7 @@ public class Cust implements Parcelable
      * @return
      *     The AddressLine1
      */
-    public Object getAddressLine1() {
+    public String getAddressLine1() {
         return AddressLine1;
     }
 
@@ -228,7 +228,7 @@ public class Cust implements Parcelable
      * @param AddressLine1
      *     The AddressLine1
      */
-    public void setAddressLine1(Object AddressLine1) {
+    public void setAddressLine1(String AddressLine1) {
         this.AddressLine1 = AddressLine1;
     }
 
@@ -237,7 +237,7 @@ public class Cust implements Parcelable
      * @return
      *     The addressLine2
      */
-    public Object getAddressLine2() {
+    public String getAddressLine2() {
         return addressLine2;
     }
 
@@ -246,7 +246,7 @@ public class Cust implements Parcelable
      * @param addressLine2
      *     The addressLine2
      */
-    public void setAddressLine2(Object addressLine2) {
+    public void setAddressLine2(String addressLine2) {
         this.addressLine2 = addressLine2;
     }
 
@@ -255,7 +255,7 @@ public class Cust implements Parcelable
      * @return
      *     The AddressLine3
      */
-    public Object getAddressLine3() {
+    public String getAddressLine3() {
         return AddressLine3;
     }
 
@@ -264,7 +264,7 @@ public class Cust implements Parcelable
      * @param AddressLine3
      *     The AddressLine3
      */
-    public void setAddressLine3(Object AddressLine3) {
+    public void setAddressLine3(String AddressLine3) {
         this.AddressLine3 = AddressLine3;
     }
 
@@ -399,7 +399,7 @@ public class Cust implements Parcelable
      * @return
      *     The mobileno
      */
-    public Object getMobileno() {
+    public String getMobileno() {
         return mobileno;
     }
 
@@ -408,7 +408,7 @@ public class Cust implements Parcelable
      * @param mobileno
      *     The mobileno
      */
-    public void setMobileno(Object mobileno) {
+    public void setMobileno(String mobileno) {
         this.mobileno = mobileno;
     }
 

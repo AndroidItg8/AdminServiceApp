@@ -14,21 +14,37 @@ import retrofit2.http.Url;
  */
 
 public class SalesPersonAddModuleImp implements SalesPersonAddMVP.SalesPersonAddModule {
+    private Call<StatusModel> call;
+    private Call<StatusModel> callUpdate;
+    private Call<StatusModel> callDelete;
+
     @Override
     public void onDestroy() {
+        if(call!= null)
+        {
+            call.cancel();
+        }
+        if(callUpdate!= null)
+        {
+            callUpdate.cancel();
+        }
+        if(callDelete!= null)
+        {
+            callDelete.cancel();
+        }
 
     }
 
     @Override
     public void onButtonClicked(String url, String person, String mobile, String anotherMobile, String email, String address, final SalesPersonAddMVP.SalesPersonAddListener listener) {
-        Call<StatusModel> call = AppApplication.getInstance().getRetroController().addEngg(url, email, "123456", "123456", "Employee", mobile, person, address);
+        call = AppApplication.getInstance().getRetroController().addEngg(url, email, "123456", "123456", "Employee", mobile, person, address,anotherMobile);
 
         call.enqueue(new Callback<StatusModel>() {
             @Override
             public void onResponse(Call<StatusModel> call, Response<StatusModel> response) {
                 if (response.isSuccessful()) {
                     if (response.body().isFlag()) {
-                        listener.onSuccess(response.body().getStatus());
+                        listener.onSuccess("Sales Person Added Successfully..");
 
                     } else {
                         listener.onError(response.body().getStatus());
@@ -55,13 +71,13 @@ public class SalesPersonAddModuleImp implements SalesPersonAddMVP.SalesPersonAdd
 
     @Override
     public void onUpdateSalesPerson(String url, int pkid, String name, String mobile, String anotherMobile, String email, String address, final SalesPersonAddMVP.SalesPersonAddListener listener) {
-        Call<StatusModel> callUpdate = AppApplication.getInstance().getRetroController().updateEngg(url,pkid ,email, "Employee", mobile, name, address);
+         callUpdate = AppApplication.getInstance().getRetroController().updateEngg(url,pkid ,email, "Employee", mobile, name, address);
         callUpdate.enqueue(new Callback<StatusModel>() {
             @Override
             public void onResponse(Call<StatusModel> call, Response<StatusModel> response) {
                 if (response.isSuccessful()) {
                     if (response.body().isFlag()) {
-                        listener.onUpadteSuccess(response.body().getStatus());
+                        listener.onUpadteSuccess(" Updated Successfully..");
 
                     } else {
                         listener.onError(response.body().getStatus());
@@ -87,13 +103,13 @@ public class SalesPersonAddModuleImp implements SalesPersonAddMVP.SalesPersonAdd
 
     @Override
     public void onDeleteEngg(String url, int pkid, final SalesPersonAddMVP.SalesPersonAddListener listener) {
-       Call<StatusModel> callDelete = AppApplication.getInstance().getRetroController().deleteEngg(url,pkid);
+       callDelete = AppApplication.getInstance().getRetroController().deleteEngg(url,pkid);
        callDelete.enqueue(new Callback<StatusModel>() {
            @Override
            public void onResponse(Call<StatusModel> call, Response<StatusModel> response) {
                if (response.isSuccessful()) {
                    if (response.body().isFlag()) {
-                       listener.onSuccessDelete(response.body().getStatus());
+                       listener.onSuccessDelete("Sales Person Deleted Successfully..");
 
                    } else {
                        listener.onError(response.body().getStatus());

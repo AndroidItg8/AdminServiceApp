@@ -26,6 +26,7 @@
     <color name="search_light_text_highlight">#62000000</color>
     <color name="transparentBlackList">#32000000</color>
     <color name="colorGreen">#066603</color>
+    <color name="colorRed">#FF511108</color>
 
 
     <!-- Dark Theme -->

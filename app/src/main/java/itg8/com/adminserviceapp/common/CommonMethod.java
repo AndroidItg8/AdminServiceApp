@@ -60,6 +60,12 @@ public class CommonMethod {
     public static final String TICKET = "ticket";
     public static final int FROM_ASSIGN = 2;
     public static final String from = "from";
+    public static final String FBASE_TOKEN = "FBASE_TOKEN";
+    public static final String ENQUIRY = "ENQUIRY";
+    public static final String FROM_NOTIFICATION = "FROM_NOTIFICATION";
+    public static final String FEEDBACK = "FEEDBACK";
+    public static final String FROM_ACTIVITY = "FROM_ACTIVITY";
+    public static final String FOLDER_NAME = "AdminService";
     private static Typeface typeface;
     private Context context;
 
@@ -144,6 +150,16 @@ public class CommonMethod {
 //        String finalString = formatter.format(date);
         return date;
     }
+    public static String currentDate() {
+
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.getDefault());
+
+
+      return    formatter.format(Calendar.getInstance().getTimeInMillis());
+
+
+
+    }
 
 
     public static void showHideItem(View show, View hide) {
@@ -165,7 +181,6 @@ public class CommonMethod {
     }
 
     public static String checkProfile(String s) {
-
         if (s != null)
             return s;
         return "UNKNOWN USER";
@@ -175,7 +190,7 @@ public class CommonMethod {
         return !(product == null || product.size() <= 0);
     }
 
-    public static void sendRegistrationToServer(String refreshedToken, Context context) {
+    public static void sendRegistrationToServer(final String refreshedToken, Context context) {
         if (Prefs.getString(CommonMethod.HEADER, null) != null) {
             JsonObject object = new JsonObject();
             object.setToken(refreshedToken);
@@ -186,6 +201,7 @@ public class CommonMethod {
                 public void onResponse(Call<StatusModel> call, Response<StatusModel> response) {
                     if (response.isSuccessful()) {
                         if (response.body().isFlag()) {
+                            Prefs.putString(FBASE_TOKEN,refreshedToken);
                             Logs.d("OnSuccess" + response.body().getStatus());
                         } else {
                             Logs.d("OnFailed" + response.body().getStatus());
@@ -207,6 +223,13 @@ public class CommonMethod {
             });
 
         }
+    }
+
+    public static float checkRating(int rating) {
+        if(rating>0)
+        return rating;
+        else
+            return 0;
     }
 
     public static class JsonObject {

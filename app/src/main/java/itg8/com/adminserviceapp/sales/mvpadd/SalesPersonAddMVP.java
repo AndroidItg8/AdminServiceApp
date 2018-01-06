@@ -32,6 +32,9 @@ public interface SalesPersonAddMVP {
         void onSuceesUpdate(String status);
 
         void onSuccessDelete(String success);
+
+        void showAllUpdateValues(String name, String mobile, String anotherMobile, String address, String email);
+
     }
     public interface SalesPersonAddPresenter
     {

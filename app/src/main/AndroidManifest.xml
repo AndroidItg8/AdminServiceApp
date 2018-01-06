@@ -9,10 +9,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <!--<instrumentation-->
-        <!--android:name="android.support.test.runner.AndroidJUnitRunner"-->
-        <!--android:targetPackage="itg8.com.adminserviceapp" />-->
-
+    <!-- <instrumentation -->
+    <!-- android:name="android.support.test.runner.AndroidJUnitRunner" -->
+    <!-- android:targetPackage="itg8.com.adminserviceapp" /> -->
     <application
         android:name=".common.AppApplication"
         android:allowBackup="true"
@@ -87,6 +86,31 @@
         <activity
             android:name=".ticket.TicketDetailsActivity"
             android:label="@string/title_activity_ticket_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".notification.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".notification.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".enquiry.EnquiryDetailsActivity"
+            android:label="@string/title_activity_enquiry_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <activity
+            android:name=".feedback.FeedbackDetailsActivity"
+            android:label="@string/title_activity_feedback_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

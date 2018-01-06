@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import java.util.List;
 
 import itg8.com.adminserviceapp.enquiry.model.EnquiryModel;
-import itg8.com.adminserviceapp.sales.model.SalesPersonModel;
 import itg8.com.adminserviceapp.ticket.mvp.BaseListener;
 import itg8.com.adminserviceapp.ticket.mvp.BaseModule;
 import itg8.com.adminserviceapp.ticket.mvp.BasePresenter;
@@ -35,7 +34,7 @@ public interface EnquiryMVP {
     }
 
     public interface EnquiryListener extends BaseListener {
-        void onDownloadedEnquiryList(List<EnquiryModel> list);
+        void onDownloadedEnquiryList(List<EnquiryModel> list, int page);
 
         void emptyList();
     }
